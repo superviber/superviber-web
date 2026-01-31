@@ -206,7 +206,32 @@ export function LyricsEditor() {
       const res = await fetch('/data/songs.json');
       if (res.ok) {
         const data = await res.json();
-        setSongs(data.songs || []);
+        const baseSongs: Song[] = data.songs || [];
+
+        // Load LRC metadata for songs that have lyrics
+        const updatedSongs = await Promise.all(
+          baseSongs.map(async (song) => {
+            if (!song.hasLyrics) return song;
+            try {
+              const lrcRes = await fetch(`/data/lyrics/${song.videoId}.lrc`);
+              if (lrcRes.ok) {
+                const lrc = await lrcRes.text();
+                const titleMatch = lrc.match(/^\[ti:(.+)\]$/im);
+                const artistMatch = lrc.match(/^\[ar:(.+)\]$/im);
+                return {
+                  ...song,
+                  title: titleMatch ? titleMatch[1].trim() : song.title,
+                  artist: artistMatch ? artistMatch[1].trim() : song.artist,
+                };
+              }
+            } catch {
+              // Ignore errors
+            }
+            return song;
+          })
+        );
+
+        setSongs(updatedSongs);
       }
     } catch (err) {
       console.error('Failed to load songs:', err);
