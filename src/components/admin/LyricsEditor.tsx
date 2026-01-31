@@ -594,6 +594,20 @@ export function LyricsEditor() {
                 Fetch Lyrics
               </button>
 
+              {mode === 'sync' && lines.some(l => l.time !== null) && (
+                <button
+                  onClick={() => {
+                    if (!confirm('Clear all timestamps?')) return;
+                    isDirtyRef.current = true;
+                    const cleared = lines.map(l => ({ ...l, time: null }));
+                    setLines(cleared);
+                  }}
+                  className="px-3 py-1 text-xs bg-zinc-800 hover:bg-red-900 text-zinc-400 hover:text-red-300 rounded"
+                >
+                  Clear Timing
+                </button>
+              )}
+
               {mode === 'sync' && (
                 <>
                   <button
