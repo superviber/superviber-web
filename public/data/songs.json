@@ -1,0 +1,23 @@
+{
+  "playlistId": "PL7MpUyhMLCxfpP8viEu0CDLkpYH3GrpA7",
+  "songs": [
+    {
+      "videoId": "D0Un2GTRhHM",
+      "title": "Sample Song 1",
+      "artist": "Artist 1",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "2O1-XNwNq70",
+      "title": "Sample Song 2",
+      "artist": "Artist 2",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "S2-i7e5rxjg",
+      "title": "Sample Song 3",
+      "artist": "Artist 3",
+      "hasLyrics": false
+    }
+  ]
+}
