@@ -3,20 +3,236 @@
   "songs": [
     {
       "videoId": "D0Un2GTRhHM",
-      "title": "Sample Song 1",
-      "artist": "Artist 1",
+      "title": "If I Were Human",
+      "artist": "BNNY RBBT",
       "hasLyrics": true
     },
     {
       "videoId": "2O1-XNwNq70",
-      "title": "Sample Song 2",
-      "artist": "Artist 2",
+      "title": "Cucurucu",
+      "artist": "Nick Mulvey",
       "hasLyrics": true
     },
     {
       "videoId": "S2-i7e5rxjg",
-      "title": "Sample Song 3",
-      "artist": "Artist 3",
+      "title": "Walden Pond",
+      "artist": "Atta Boy",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "gEV6W-r-d20",
+      "title": "17",
+      "artist": "Youth Lagoon",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "jPKHL7EGq3A",
+      "title": "Generator ^ First Floor",
+      "artist": "Freelance Whales",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "NF45jk0_SJc",
+      "title": "At Home",
+      "artist": "Crystal Fighters",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "C4xzDKpEWEg",
+      "title": "&Run",
+      "artist": "Sir Sly",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "sDNy9q62jCc",
+      "title": "Life Crisis",
+      "artist": "River Whyless",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "K43ya8QpTXo",
+      "title": "Come On Mess Me Up",
+      "artist": "Cub Sport",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "td8xVMl6-f4",
+      "title": "The Violent Blue",
+      "artist": "Electric President",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "Wqpveg_ZvPI",
+      "title": "Hallucinogenics",
+      "artist": "Matt Maeson",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "6CmH9rS3240",
+      "title": "Crash the Sun, Save the Crew",
+      "artist": "Promptgenix",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "Q8REr9dL6Sk",
+      "title": "Lullaby",
+      "artist": "Electric President",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "NU6V3B7pKU0",
+      "title": "A Tear In Space (Airlock)",
+      "artist": "Glass Animals",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "-7BDdbaEsj0",
+      "title": "Safe and Sound",
+      "artist": "Electric President",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "RB-RcX5DS5A",
+      "title": "The Scientist",
+      "artist": "Coldplay",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "8DvjFAl1jno",
+      "title": "When Water Comes to Life",
+      "artist": "Cloud Cult",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "3zys85Zzw7I",
+      "title": "Truth is a Dimension",
+      "artist": "Josh Ritter",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "Odlw8WdsZS8",
+      "title": "One",
+      "artist": "Birdtalker",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "pkPH7Ge9xXU",
+      "title": "Adventures In Your Own Backyard",
+      "artist": "Patrick Watson",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "hhkPtllG-L8",
+      "title": "Welcome Home, Son",
+      "artist": "Radical Face",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "LgBPRNNQcmM",
+      "title": "Truth",
+      "artist": "Alexander",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "Na6s-4OOWXQ",
+      "title": "Metal Fingers",
+      "artist": "Electric President",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "tjQ8zMENqEc",
+      "title": "Optimism",
+      "artist": "ANIMA!",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "aLkPs5ieeLY",
+      "title": "I Love You And Buddha Too",
+      "artist": "Mason Jennings",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "_mw3avI2eUE",
+      "title": "Modern Jesus",
+      "artist": "Portugal. The Man",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "rquqd74nx0U",
+      "title": "Love Ain't Enough",
+      "artist": "The Barr Brothers",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "o7N-0I8Y1rk",
+      "title": "Better Son or Daughter",
+      "artist": "Rilo Kiley",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "J0LsVtPp1_M",
+      "title": "Grand Machine No. 12",
+      "artist": "Electric President",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "nNkp3ln_208",
+      "title": "Jimme's Song",
+      "artist": "Emanuel & the Fear",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "HRrt5f1Lk-Y",
+      "title": "Security",
+      "artist": "Stop Light Observations",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "di_MwYDLTH0",
+      "title": "No Mind, Never Matter",
+      "artist": "ANIMA!",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "Q-M-A4kkKRg",
+      "title": "California Girls (Remix)",
+      "artist": "NoMBe Vs Sonny Alven",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "z8eznfy2asM",
+      "title": "Walkabout",
+      "artist": "onlysmokecigsontheweekend",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "Xqw4wo8vdY8",
+      "title": "Fineshrine",
+      "artist": "Purity Ring",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "W0vpPFBuc0o",
+      "title": "The Beast",
+      "artist": "Cataldo",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "9DNfrhf_Wxg",
+      "title": "Beige",
+      "artist": "Yoke Lore",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "kUZmFNzFrac",
+      "title": "Love Thy Soul",
+      "artist": "Calimossa",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "mmhZ1JmTwLs",
+      "title": "Watch It Grow",
+      "artist": "KR3TURE",
       "hasLyrics": false
     }
   ]

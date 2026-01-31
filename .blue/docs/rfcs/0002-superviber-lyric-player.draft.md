@@ -12,40 +12,120 @@
 
 ## Summary
 
-Build a YouTube playlist player with synchronized lyrics display. Uses YouTube IFrame API with LRC format lyrics. Side-by-side layout for YouTube ToS compliance. Deployed as part of the static site on AWS Amplify.
+Build a YouTube playlist player with karaoke-style synchronized lyrics. Uses YouTube IFrame API with LRC format lyrics. Video at top, lyrics below with auto-scroll. Each song is deep-linkable via URL. Deployed as part of the static site on AWS Amplify.
 
 ## Problem
 
 SuperViber needs a custom web player that:
 - Plays YouTube videos from a curated playlist
-- Displays synchronized lyrics that highlight in time with the music
-- Works seamlessly on desktop and mobile
+- Displays synchronized lyrics with karaoke-style highlighting (scale + glow)
+- Supports deep linking to individual songs (`/player/[videoId]`)
+- Works seamlessly on desktop and mobile with responsive layout
 
 ## Architecture
 
-### Layout (YouTube ToS Compliant)
+### URL Structure
 
 ```
-┌─────────────────────────────────────────────────┐
-│  Desktop: Side-by-side                          │
-│  ┌──────────────────┐  ┌──────────────────┐    │
-│  │                  │  │                  │    │
-│  │  YouTube Player  │  │  Lyrics Panel    │    │
-│  │  (standard UI)   │  │  (synced text)   │    │
-│  │                  │  │                  │    │
-│  └──────────────────┘  └──────────────────┘    │
-│                                                 │
-│  Mobile: Stacked                                │
-│  ┌──────────────────────────────────────┐      │
-│  │  YouTube Player                       │      │
-│  └──────────────────────────────────────┘      │
-│  ┌──────────────────────────────────────┐      │
-│  │  Lyrics Panel                         │      │
-│  └──────────────────────────────────────┘      │
-└─────────────────────────────────────────────────┘
+/player              → First song in playlist
+/player/[videoId]    → Specific song (deep link)
+
+Examples:
+/player/D0Un2GTRhHM  → Direct link to specific song
+/player/2O1-XNwNq70  → Another song
 ```
 
-**Important**: No overlays on YouTube player. Standard controls always visible. This complies with YouTube ToS.
+**Playlist ID**: `PL7MpUyhMLCxfpP8viEu0CDLkpYH3GrpA7`
+
+### Responsive Layout
+
+Video always at top (16:9 aspect ratio), lyrics below or beside based on viewport:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  MOBILE (<768px): Stacked                                   │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  YouTube Player (16:9, full width)                    │  │
+│  └───────────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  Song Title / Artist                                  │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │  ♪ Previous lyrics (faded)                           │  │
+│  │  ♪ Previous lyrics (faded)                           │  │
+│  │  ▶ CURRENT LINE (large, glowing)                     │  │
+│  │  ♪ Upcoming lyrics (faded)                           │  │
+│  │  ♪ Upcoming lyrics (faded)                           │  │
+│  └───────────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  [◀ Prev]  Song Selector  [Next ▶]                   │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│  TABLET (768px-1024px): Stacked with max-width              │
+│  ┌─────────────────────────────────────────┐                │
+│  │  YouTube Player (max-width: 640px)      │  ← centered    │
+│  └─────────────────────────────────────────┘                │
+│  ┌─────────────────────────────────────────┐                │
+│  │  Lyrics Panel (max-width: 640px)        │  ← centered    │
+│  └─────────────────────────────────────────┘                │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│  DESKTOP (>1024px): Side-by-side                            │
+│  ┌───────────────────────────┐ ┌───────────────────────────┐│
+│  │                           │ │                           ││
+│  │  YouTube Player           │ │  Lyrics Panel             ││
+│  │  (max-width: 640px)       │ │  (flex: 1)                ││
+│  │                           │ │                           ││
+│  │                           │ │  ▶ CURRENT LINE           ││
+│  │                           │ │                           ││
+│  └───────────────────────────┘ └───────────────────────────┘│
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  [◀ Prev]  Song Selector Dropdown  [Next ▶]          │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Breakpoints**:
+| Viewport | Layout | Video Max Width |
+|----------|--------|-----------------|
+| <768px | Stacked | 100% |
+| 768-1024px | Stacked centered | 640px |
+| >1024px | Side-by-side | 640px |
+
+**Important**: No overlays on YouTube player. Standard controls always visible (YouTube ToS compliance).
+
+### Karaoke-Style Lyrics Display
+
+The current line is emphasized while surrounding lines fade:
+
+```css
+/* Current line: large, glowing, white */
+.lyric-current {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(139, 92, 246, 0.8),
+               0 0 40px rgba(236, 72, 153, 0.6);
+  transform: scale(1.1);
+  transition: all 0.2s ease-out;
+}
+
+/* Adjacent lines: normal size, dimmed */
+.lyric-adjacent {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Distant lines: smaller, very faded */
+.lyric-distant {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.25);
+}
+```
+
+**Auto-scroll behavior**: Current line stays vertically centered in the lyrics panel. Panel smoothly scrolls to keep the active line in view.
 
 ### Player State Machine
 
@@ -100,16 +180,24 @@ function syncLoop() {
 
 ### Data Schema
 
-**songs.json** (from RFC-0003):
+**songs.json** (created via RFC-0003 admin tool):
 ```json
 {
-  "playlist": [
+  "playlistId": "PL7MpUyhMLCxfpP8viEu0CDLkpYH3GrpA7",
+  "songs": [
     {
-      "videoId": "dQw4w9WgXcQ",
-      "title": "Never Gonna Give You Up",
-      "artist": "Rick Astley",
-      "lrcFile": "dQw4w9WgXcQ.lrc",
-      "addedAt": "2026-01-30T15:00:00Z"
+      "videoId": "D0Un2GTRhHM",
+      "title": "Song Title",
+      "artist": "Artist Name",
+      "duration": 234,
+      "hasLyrics": true
+    },
+    {
+      "videoId": "2O1-XNwNq70",
+      "title": "Another Song",
+      "artist": "Another Artist",
+      "duration": 187,
+      "hasLyrics": true
     }
   ]
 }
@@ -117,10 +205,18 @@ function syncLoop() {
 
 **LRC Format** (`data/lyrics/{videoId}.lrc`):
 ```
-[00:00.00] Never gonna give you up
-[00:03.50] Never gonna let you down
-[00:07.20] Never gonna run around and desert you
+[ti:Song Title]
+[ar:Artist Name]
+[00:00.00]First line of lyrics
+[00:03.50]Second line of lyrics
+[00:07.20]Third line continues here
+[00:12.00]
+[00:15.50]After instrumental break
 ```
+
+- Empty brackets `[00:12.00]` indicate instrumental sections (no text displayed)
+- Timestamps are `[mm:ss.xx]` format (minutes:seconds.centiseconds)
+- Each line has exactly one timestamp
 
 ### Integration Points
 
@@ -133,10 +229,23 @@ function syncLoop() {
 
 ### Playlist Navigation
 
-- Single playlist, admin-ordered (no shuffle in MVP)
-- Previous/Next buttons
-- Song list sidebar or dropdown
-- Auto-advance to next song on video end
+**Song Selector**: Dropdown showing all songs in playlist order
+- Current song highlighted
+- Shows title + artist for each
+- Selecting a song navigates to `/player/[videoId]`
+
+**Prev/Next Buttons**: Navigate through playlist order
+- Wraps around (last → first, first → last)
+- Updates URL to new videoId
+
+**Auto-advance**: When video ends, automatically load next song
+- Updates URL via `history.pushState` (no full page reload)
+- If last song, optionally loop to first or stop
+
+**Deep linking**:
+- `/player` → loads first song in playlist
+- `/player/[videoId]` → loads specific song
+- Shareable URLs for any song
 
 ### Hosting
 
@@ -169,16 +278,32 @@ Deployed as part of superviber-web static site on AWS Amplify (RFC-0000). The pl
 
 ## Tasks
 
-- [ ] Create LyricPlayer React component
-- [ ] Implement YouTube IFrame API integration
-- [ ] Build LRC parser
-- [ ] Implement sync engine with requestAnimationFrame
-- [ ] Create state machine with proper transitions
-- [ ] Build lyrics display panel with highlighting
-- [ ] Add playlist navigation (prev/next, song list)
-- [ ] Implement responsive side-by-side/stacked layout
-- [ ] Add error handling for missing lyrics/videos
-- [ ] Integration tests for sync accuracy
+### Core Player
+- [ ] Create `/player/[[...videoId]]/page.tsx` route (catch-all for deep linking)
+- [ ] Implement YouTube IFrame API integration (`useYouTubePlayer` hook)
+- [ ] Build LRC parser utility (`parseLRC()` function)
+- [ ] Implement sync engine with requestAnimationFrame (`useLyricSync` hook)
+- [ ] Create player state machine (LOADING → READY → PLAYING ⇄ PAUSED)
+
+### UI Components
+- [ ] Build `<VideoPlayer>` component with responsive container
+- [ ] Build `<LyricsPanel>` with karaoke-style highlighting
+- [ ] Implement auto-scroll to keep current line centered
+- [ ] Build `<SongSelector>` dropdown component
+- [ ] Build `<PlaylistControls>` (prev/next buttons)
+- [ ] Implement responsive layout (stacked vs side-by-side)
+
+### Data & Navigation
+- [ ] Create initial `songs.json` with playlist data
+- [ ] Implement song navigation with URL updates
+- [ ] Handle auto-advance on video end
+- [ ] Add error states for missing lyrics/unavailable videos
+
+### Polish
+- [ ] Add loading skeleton while video/lyrics load
+- [ ] Add "No lyrics available" fallback
+- [ ] Test sync accuracy (target: ±100ms)
+- [ ] Test responsive breakpoints on real devices
 
 ---
 
