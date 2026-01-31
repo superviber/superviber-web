@@ -27,13 +27,13 @@
     },
     {
       "videoId": "4ZVq2Ev3rVU",
-      "title": "17",
+      "title": "17 (Unofficial Video)",
       "artist": "Youth Lagoon",
       "hasLyrics": true
     },
     {
       "videoId": "ispGw346zeQ",
-      "title": "Generator ^ First Floor",
+      "title": "Generator ^ First Floor (Unofficial Music Video)",
       "artist": "Freelance Whales",
       "hasLyrics": true
     },
@@ -45,8 +45,8 @@
     },
     {
       "videoId": "0to4Jt2Sfao",
-      "title": "Transistor Radio",
-      "artist": "Cloud Cult",
+      "title": "Cloud Cult",
+      "artist": "Transistor Radio",
       "hasLyrics": true
     },
     {
@@ -56,16 +56,22 @@
       "hasLyrics": true
     },
     {
-      "videoId": "sDNy9q62jCc",
-      "title": "Life Crisis",
-      "artist": "River Whyless",
-      "hasLyrics": true
-    },
-    {
       "videoId": "K43ya8QpTXo",
       "title": "Come On Mess Me Up",
       "artist": "Cub Sport",
       "hasLyrics": true
+    },
+    {
+      "videoId": "sDNy9q62jCc",
+      "title": "LIFE CRISIS",
+      "artist": "River Whyless",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "RQ5wNPMERmw",
+      "title": "Getting Ready to Get Down",
+      "artist": "Josh Ritter",
+      "hasLyrics": false
     },
     {
       "videoId": "td8xVMl6-f4",
@@ -99,20 +105,20 @@
     },
     {
       "videoId": "H_G-rExSJZQ",
-      "title": "There’s So Much Energy In Us",
-      "artist": "Cloud Cult",
+      "title": "Cloud Cult Music Video",
+      "artist": "There’s So Much Energy In Us",
       "hasLyrics": true
     },
     {
       "videoId": "9-LI98Q-rsg",
-      "title": "A Tear In Space (Airlock)",
+      "title": "A Tear In Space (Airlock) | Official Video",
       "artist": "Glass Animals",
       "hasLyrics": true
     },
     {
       "videoId": "DH2jd3eveBk",
       "title": "Safe and Sound",
-      "artist": "Electric President",
+      "artist": "Electric President - Topic",
       "hasLyrics": true
     },
     {
@@ -123,7 +129,7 @@
     },
     {
       "videoId": "itpa_IOuz3Y",
-      "title": "In a River",
+      "title": "\"In a River\"",
       "artist": "Rostam",
       "hasLyrics": true
     },
@@ -135,7 +141,7 @@
     },
     {
       "videoId": "fNvF4ER_NOg",
-      "title": "Truth Is a Dimension (Both Invisible and Blinding)",
+      "title": "Truth is a Dimension (Both Invisible and Blinding)",
       "artist": "Josh Ritter",
       "hasLyrics": true
     },
@@ -153,8 +159,8 @@
     },
     {
       "videoId": "P8a4iiOnzsc",
-      "title": "Welcome Home, Son",
-      "artist": "Radical Face",
+      "title": "Radical Face 'Welcome Home, Son'",
+      "artist": "JustinMitchell",
       "hasLyrics": true
     },
     {
@@ -173,6 +179,12 @@
       "videoId": "Ii-HvEWyC-U",
       "title": "Optimism",
       "artist": "ANIMA! - Topic",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "WrBAdzACig0",
+      "title": "Homecoming",
+      "artist": "Josh Ritter",
       "hasLyrics": false
     },
     {
@@ -257,6 +269,12 @@
       "videoId": "BSegx1n7RR0",
       "title": "Beige",
       "artist": "Yoke Lore",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "B4wtNGR4Nnk",
+      "title": "Temptation of Adam (best version)",
+      "artist": "Josh Ritter",
       "hasLyrics": false
     },
     {

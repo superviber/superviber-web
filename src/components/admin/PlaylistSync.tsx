@@ -90,11 +90,16 @@ export function PlaylistSync() {
       const newOrder = playlistSongs.filter(s => currentMap.has(s.videoId)).map(s => s.videoId).join(',');
       const reordered = currentOrder !== newOrder && unchanged.length > 0;
 
-      // Merge: use playlist order, preserve hasLyrics from current
-      const merged = playlistSongs.map(s => ({
-        ...s,
-        hasLyrics: currentMap.get(s.videoId)?.hasLyrics ?? false,
-      }));
+      // Merge: use playlist order, preserve title/artist/hasLyrics from current
+      const merged = playlistSongs.map(s => {
+        const existing = currentMap.get(s.videoId);
+        return {
+          ...s,
+          title: existing?.title ?? s.title,
+          artist: existing?.artist ?? s.artist,
+          hasLyrics: existing?.hasLyrics ?? false,
+        };
+      });
 
       // Initialize removed action to 'remove' by default
       const defaultActions: Record<string, 'keep' | 'remove'> = {};
