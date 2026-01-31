@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { VideoPlayer } from './VideoPlayer';
 import { LyricsPanel } from './LyricsPanel';
 import { PlayerControls } from './PlayerControls';
@@ -9,16 +9,67 @@ import { useLyricSync } from '@/hooks/useLyricSync';
 import { parseLRC, type ParsedLRC } from '@/lib/lrc-parser';
 import type { Playlist } from '@/lib/types';
 
+const STORAGE_KEY = 'superviber-player-state';
+
+interface SavedPlayerState {
+  videoId: string;
+  time: number;
+  timestamp: number;
+}
+
+function getSavedState(): SavedPlayerState | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return null;
+    const state = JSON.parse(saved) as SavedPlayerState;
+    // Only restore if saved within last 24 hours
+    if (Date.now() - state.timestamp > 24 * 60 * 60 * 1000) return null;
+    return state;
+  } catch {
+    return null;
+  }
+}
+
+function saveState(videoId: string, time: number) {
+  if (typeof window === 'undefined') return;
+  try {
+    const state: SavedPlayerState = { videoId, time, timestamp: Date.now() };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 interface PlayerClientProps {
   playlist: Playlist;
   initialVideoId: string;
 }
 
 export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
-  const [currentVideoId, setCurrentVideoId] = useState(initialVideoId);
+  // Check for saved state on mount (only if no specific video in URL)
+  const savedState = useRef(getSavedState());
+  const isDefaultVideo = initialVideoId === playlist.songs[0]?.videoId;
+  const shouldRestore = isDefaultVideo && savedState.current &&
+    playlist.songs.some(s => s.videoId === savedState.current?.videoId);
+
+  const [currentVideoId, setCurrentVideoId] = useState(
+    shouldRestore ? savedState.current!.videoId : initialVideoId
+  );
   const [lyrics, setLyrics] = useState<ParsedLRC>({ lines: [] });
   const [isLoadingLyrics, setIsLoadingLyrics] = useState(true);
   const [shouldAutoplay, setShouldAutoplay] = useState(false);
+  const [pendingSeek, setPendingSeek] = useState<number | null>(
+    shouldRestore && savedState.current!.time > 0 ? savedState.current!.time : null
+  );
+  const saveIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Update URL if we restored from saved state
+  useEffect(() => {
+    if (shouldRestore && currentVideoId !== initialVideoId) {
+      window.history.replaceState({}, '', `/player/${currentVideoId}`);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const currentSong = playlist.songs.find((s) => s.videoId === currentVideoId);
   const currentIndex = playlist.songs.findIndex(
@@ -69,6 +120,81 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
     playerState,
     getCurrentTime,
   });
+
+  // Save state when navigating away
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      const time = getCurrentTime();
+      if (time > 0) {
+        saveState(currentVideoId, time);
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [currentVideoId, getCurrentTime]);
+
+  // Seek to saved position when player becomes ready
+  useEffect(() => {
+    if (pendingSeek === null) return;
+    if (playerState !== 'READY' && playerState !== 'PAUSED' && playerState !== 'PLAYING') return;
+
+    // Poll for duration to become available, then seek
+    let attempts = 0;
+    const maxAttempts = 50; // 5 seconds max
+
+    const trySeek = () => {
+      const duration = getDuration();
+      if (duration > 0 && pendingSeek < duration) {
+        seekTo(pendingSeek);
+        setPendingSeek(null);
+        return true;
+      }
+      return false;
+    };
+
+    // Try immediately
+    if (trySeek()) return;
+
+    // Poll until duration is available
+    const interval = setInterval(() => {
+      attempts++;
+      if (trySeek() || attempts >= maxAttempts) {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [playerState, pendingSeek, seekTo, getDuration]);
+
+  // Save player state periodically while playing
+  useEffect(() => {
+    if (playerState === 'PLAYING') {
+      // Save immediately when starting to play
+      saveState(currentVideoId, getCurrentTime());
+
+      // Then save every 5 seconds
+      saveIntervalRef.current = setInterval(() => {
+        saveState(currentVideoId, getCurrentTime());
+      }, 5000);
+    } else {
+      // Save current position when pausing
+      if (playerState === 'PAUSED' && hasPlayedOnce) {
+        saveState(currentVideoId, getCurrentTime());
+      }
+
+      if (saveIntervalRef.current) {
+        clearInterval(saveIntervalRef.current);
+        saveIntervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (saveIntervalRef.current) {
+        clearInterval(saveIntervalRef.current);
+      }
+    };
+  }, [playerState, currentVideoId, getCurrentTime, hasPlayedOnce]);
 
   // Load lyrics when song changes
   useEffect(() => {

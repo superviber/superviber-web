@@ -43,11 +43,11 @@ body {
 }
 
 /* Karaoke-style lyrics - use transform instead of font-size to avoid layout shifts */
+/* transform-origin is controlled by Tailwind classes: origin-center lg:origin-left */
 .lyric-current,
 .lyric-adjacent,
 .lyric-distant {
   font-size: 1.125rem;
-  transform-origin: center;
   will-change: transform, opacity, color;
 }
 

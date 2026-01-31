@@ -86,7 +86,7 @@ export function LyricsPanel({
       {/* Lyrics container - overflow-anchor:none prevents browser scroll anchoring */}
       <div
         ref={containerRefCallback}
-        className="flex-1 overflow-y-auto px-6 py-4 min-h-[200px]"
+        className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-4 min-h-[200px]"
         style={{ overflowAnchor: 'none' }}
       >
 
@@ -103,7 +103,7 @@ export function LyricsPanel({
                 lineRefs.current[index] = el;
               }}
               className={`
-                py-3 lg:py-4 px-[12%] lg:pl-0 lg:pr-[20%]
+                py-3 lg:py-4 px-[12%] lg:px-4
                 transition-[transform,color,opacity,text-shadow] duration-300 ease-out
                 text-center lg:text-left origin-center lg:origin-left
                 ${isCurrent ? 'lyric-current' : ''}
