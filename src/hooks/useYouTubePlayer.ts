@@ -95,7 +95,7 @@ export function useYouTubePlayer({
         disablekb: 1,
         fs: 0,
         iv_load_policy: 3,
-      },
+      } as YT.PlayerVars,
       events: {
         onReady: () => {
           setPlayerState('READY');
