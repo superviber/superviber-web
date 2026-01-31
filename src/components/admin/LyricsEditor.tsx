@@ -321,10 +321,12 @@ export function LyricsEditor() {
       if (lrclibRes.ok) {
         const data = await lrclibRes.json();
         if (data.syncedLyrics) {
+          isDirtyRef.current = true;
           parseLrc(data.syncedLyrics, selectedSong);
           setFetchStatus('✓ Found synced lyrics (LRCLIB)');
           return;
         } else if (data.plainLyrics) {
+          isDirtyRef.current = true;
           setPlainText(data.plainLyrics);
           parseTextToLines(data.plainLyrics);
           setFetchStatus('Found plain lyrics (LRCLIB) - needs timing');
@@ -341,6 +343,7 @@ export function LyricsEditor() {
       if (ovhRes.ok) {
         const data = await ovhRes.json();
         if (data.lyrics) {
+          isDirtyRef.current = true;
           setPlainText(data.lyrics);
           parseTextToLines(data.lyrics);
           setFetchStatus('Found lyrics (Lyrics.ovh) - needs timing');
