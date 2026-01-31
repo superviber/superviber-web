@@ -126,13 +126,8 @@ export function LyricsEditor() {
       return;
     }
 
-    // Only save if we have a song selected and at least one timed line
-    if (!selectedSong || lines.length === 0) {
-      return;
-    }
-
-    const timedLines = lines.filter(l => l.time !== null);
-    if (timedLines.length === 0) {
+    // Only save if we have a song selected
+    if (!selectedSong) {
       return;
     }
 
@@ -156,9 +151,6 @@ export function LyricsEditor() {
 
   async function autoSave() {
     if (!selectedSong) return;
-
-    const timedLines = lines.filter(l => l.time !== null);
-    if (timedLines.length === 0) return;
 
     setSaveStatus('saving');
 
