@@ -173,6 +173,20 @@ export function LyricsEditor() {
 
       if (!res.ok) throw new Error('Save failed');
 
+      // Update local state with new title/artist
+      const updatedSong = {
+        ...selectedSong,
+        title: lrcTitle,
+        artist: lrcArtist,
+        hasLyrics: true,
+      };
+      setSelectedSong(updatedSong);
+      setSongs(prev =>
+        prev.map(s =>
+          s.videoId === selectedSong.videoId ? updatedSong : s
+        )
+      );
+
       // Update songs.json hasLyrics if not already set
       if (!selectedSong.hasLyrics) {
         await fetch('/api/admin/update-song-lyrics', {
@@ -183,14 +197,6 @@ export function LyricsEditor() {
             hasLyrics: true,
           }),
         });
-
-        // Update local state
-        setSelectedSong({ ...selectedSong, hasLyrics: true });
-        setSongs(prev =>
-          prev.map(s =>
-            s.videoId === selectedSong.videoId ? { ...s, hasLyrics: true } : s
-          )
-        );
       }
 
       setSaveStatus('saved');
