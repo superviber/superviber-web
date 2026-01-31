@@ -42,6 +42,7 @@ export function LyricsEditor() {
   const timeUpdateRef = useRef<number | null>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isInitialLoadRef = useRef(true);
+  const isDirtyRef = useRef(false);
 
   // Load songs on mount
   useEffect(() => {
@@ -120,8 +121,8 @@ export function LyricsEditor() {
 
   // Auto-save effect - debounced save when lines change
   useEffect(() => {
-    // Skip initial load
-    if (isInitialLoadRef.current) {
+    // Skip if not dirty (no user edits)
+    if (!isDirtyRef.current) {
       return;
     }
 
@@ -143,6 +144,7 @@ export function LyricsEditor() {
     // Debounce save by 500ms
     saveTimeoutRef.current = setTimeout(() => {
       autoSave();
+      isDirtyRef.current = false;
     }, 500);
 
     return () => {
@@ -150,7 +152,7 @@ export function LyricsEditor() {
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [lines, selectedSong, lrcTitle, lrcArtist]);
+  }, [lines, lrcTitle, lrcArtist]);
 
   async function autoSave() {
     if (!selectedSong) return;
@@ -220,6 +222,7 @@ export function LyricsEditor() {
   }
 
   async function selectSong(song: Song) {
+    isDirtyRef.current = false; // Reset dirty flag
     isInitialLoadRef.current = true; // Mark as loading
     setSelectedSong(song);
     setLines([]);
@@ -362,6 +365,7 @@ export function LyricsEditor() {
   function markTimestamp(index: number) {
     if (!playerRef.current?.getCurrentTime) return;
 
+    isDirtyRef.current = true;
     const time = playerRef.current.getCurrentTime();
     const updated = lines.map((line, i) => (i === index ? { ...line, time } : line));
     const sorted = sortLinesByTime(updated);
@@ -404,21 +408,23 @@ export function LyricsEditor() {
 
 
   function deleteLine(index: number) {
+    isDirtyRef.current = true;
     const newLines = lines.filter((_, i) => i !== index);
     setLines(newLines);
     setPlainText(newLines.map(l => l.text).join('\n'));
   }
 
   function splitLine(index: number) {
+    isDirtyRef.current = true;
     // Insert a new empty line after the current one
     const newLines = [...lines];
-    const currentLine = newLines[index];
     newLines.splice(index + 1, 0, { time: null, text: '' });
     setLines(newLines);
     setPlainText(newLines.map(l => l.text).join('\n'));
   }
 
   function updateLineText(index: number, text: string) {
+    isDirtyRef.current = true;
     const newLines = [...lines];
     newLines[index] = { ...newLines[index], text };
     setLines(newLines);
@@ -512,14 +518,14 @@ export function LyricsEditor() {
                 <input
                   type="text"
                   value={lrcTitle}
-                  onChange={e => setLrcTitle(e.target.value)}
+                  onChange={e => { isDirtyRef.current = true; setLrcTitle(e.target.value); }}
                   className="w-full bg-transparent font-medium focus:outline-none focus:bg-zinc-800 px-1 -mx-1 rounded"
                   placeholder="Title"
                 />
                 <input
                   type="text"
                   value={lrcArtist}
-                  onChange={e => setLrcArtist(e.target.value)}
+                  onChange={e => { isDirtyRef.current = true; setLrcArtist(e.target.value); }}
                   className="w-full bg-transparent text-sm text-zinc-500 focus:outline-none focus:bg-zinc-800 focus:text-zinc-300 px-1 -mx-1 rounded"
                   placeholder="Artist"
                 />
