@@ -156,7 +156,8 @@ export function PlayerControls({
       {/* Progress bar */}
       <div
         ref={progressRef}
-        className="h-6 bg-zinc-700 cursor-pointer group relative flex items-center touch-none"
+        className="h-6 bg-zinc-700 cursor-pointer group relative flex items-center touch-none select-none"
+        style={{ WebkitTapHighlightColor: 'transparent' }}
         onClick={handleProgressClick}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
