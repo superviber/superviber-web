@@ -20,6 +20,7 @@ interface PlayerControlsProps {
   onNext: () => void;
   songTitle?: string;
   artist?: string;
+  hasPlayedOnce: boolean;
 }
 
 function formatTime(seconds: number): string {
@@ -39,6 +40,7 @@ export function PlayerControls({
   onNext,
   songTitle,
   artist,
+  hasPlayedOnce,
 }: PlayerControlsProps) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -184,9 +186,10 @@ export function PlayerControls({
 
           <button
             onClick={isPlaying ? onPause : onPlay}
-            disabled={!isReady}
+            disabled={!isReady || (!hasPlayedOnce && !isPlaying)}
             className="p-3 bg-white text-black rounded-full hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
             aria-label={isPlaying ? 'Pause' : 'Play'}
+            title={!hasPlayedOnce && !isPlaying ? 'Tap the video to start' : undefined}
           >
             {isPlaying ? (
               <Pause className="w-5 h-5" />

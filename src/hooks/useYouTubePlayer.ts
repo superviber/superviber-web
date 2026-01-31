@@ -29,6 +29,7 @@ export function useYouTubePlayer({
   const playerRef = useRef<YT.Player | null>(null);
   const [isAPIReady, setIsAPIReady] = useState(false);
   const [playerState, setPlayerState] = useState<PlayerState>('LOADING');
+  const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
 
   // Use refs for values we need in the effect but don't want as dependencies
   const autoplayRef = useRef(autoplay);
@@ -104,6 +105,7 @@ export function useYouTubePlayer({
           switch (event.data) {
             case window.YT.PlayerState.PLAYING:
               newState = 'PLAYING';
+              setHasPlayedOnce(true);
               break;
             case window.YT.PlayerState.PAUSED:
               newState = 'PAUSED';
@@ -192,5 +194,6 @@ export function useYouTubePlayer({
     pause,
     seekTo,
     isReady: playerState !== 'LOADING',
+    hasPlayedOnce,
   };
 }

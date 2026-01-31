@@ -56,6 +56,7 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
     play,
     pause,
     seekTo,
+    hasPlayedOnce,
   } = useYouTubePlayer({
     videoId: currentVideoId,
     autoplay: shouldAutoplay,
@@ -128,6 +129,7 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
                 onNext={() => goToNext(false)}
                 songTitle={currentSong?.title}
                 artist={currentSong?.artist}
+                hasPlayedOnce={hasPlayedOnce}
               />
             </div>
           </div>
