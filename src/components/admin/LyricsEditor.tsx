@@ -401,6 +401,18 @@ export function LyricsEditor() {
 
   const timedCount = lines.filter(l => l.time !== null).length;
 
+  // Find the current line based on playback time
+  const currentLineIndex = (() => {
+    if (!isPlaying && currentTime === 0) return -1;
+    let lastIndex = -1;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].time !== null && lines[i].time! <= currentTime) {
+        lastIndex = i;
+      }
+    }
+    return lastIndex;
+  })();
+
   return (
     <div className="flex gap-6 h-[calc(100vh-180px)]">
       {/* Song List */}
@@ -582,11 +594,15 @@ export function LyricsEditor() {
                 />
               ) : (
                 <div className="space-y-1">
-                  {lines.map((line, i) => (
+                  {lines.map((line, i) => {
+                    const isCurrent = i === currentLineIndex;
+                    return (
                     <div
                       key={i}
                       className={`rounded transition-colors flex items-start gap-2 ${
-                        line.time !== null
+                        isCurrent
+                          ? 'bg-violet-600/30 ring-1 ring-violet-500'
+                          : line.time !== null
                           ? 'bg-green-600/10 hover:bg-green-600/20'
                           : 'bg-zinc-800/50 hover:bg-zinc-800'
                       }`}
@@ -652,7 +668,7 @@ export function LyricsEditor() {
                         </button>
                       </div>
                     </div>
-                  ))}
+                  );})}
                 </div>
               )}
             </div>

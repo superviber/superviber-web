@@ -41,19 +41,19 @@
       "videoId": "jdoR7E7b4Mo",
       "title": "&Run",
       "artist": "Sir Sly",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "sDNy9q62jCc",
       "title": "LIFE CRISIS",
       "artist": "River Whyless",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "K43ya8QpTXo",
       "title": "Come On Mess Me Up",
       "artist": "Cub Sport",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "td8xVMl6-f4",
@@ -104,6 +104,12 @@
       "hasLyrics": true
     },
     {
+      "videoId": "itpa_IOuz3Y",
+      "title": "\"In a River\"",
+      "artist": "Rostam",
+      "hasLyrics": false
+    },
+    {
       "videoId": "8DvjFAl1jno",
       "title": "When Water Comes to Life",
       "artist": "Cloud Cult",
@@ -149,6 +155,12 @@
       "videoId": "Ii-HvEWyC-U",
       "title": "Optimism",
       "artist": "ANIMA! - Topic",
+      "hasLyrics": false
+    },
+    {
+      "videoId": "Y5BEdLQKTxw",
+      "title": "Ya Hey",
+      "artist": "Vampire Weekend",
       "hasLyrics": false
     },
     {
