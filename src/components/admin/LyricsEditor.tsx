@@ -257,8 +257,9 @@ export function LyricsEditor() {
       }
     }
 
-    setLines(parsed);
-    setPlainText(parsed.map(l => l.text).join('\n'));
+    const sorted = sortLinesByTime(parsed);
+    setLines(sorted);
+    setPlainText(sorted.map(l => l.text).join('\n'));
     setPlainTextDirty(false);
   }
 
@@ -321,9 +322,22 @@ export function LyricsEditor() {
     if (!playerRef.current?.getCurrentTime) return;
 
     const time = playerRef.current.getCurrentTime();
-    setLines(prev =>
-      prev.map((line, i) => (i === index ? { ...line, time } : line))
-    );
+    const updated = lines.map((line, i) => (i === index ? { ...line, time } : line));
+    const sorted = sortLinesByTime(updated);
+    setLines(sorted);
+    setPlainText(sorted.map(l => l.text).join('\n'));
+  }
+
+  function sortLinesByTime(linesToSort: LyricLine[]): LyricLine[] {
+    // Separate timed and untimed lines
+    const timed = linesToSort.filter(l => l.time !== null);
+    const untimed = linesToSort.filter(l => l.time === null);
+
+    // Sort timed lines by timestamp
+    timed.sort((a, b) => a.time! - b.time!);
+
+    // Append untimed lines at the end
+    return [...timed, ...untimed];
   }
 
   function formatTime(seconds: number): string {
