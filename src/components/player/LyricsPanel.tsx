@@ -103,7 +103,8 @@ export function LyricsPanel({
                 lineRefs.current[index] = el;
               }}
               className={`
-                py-2 lg:py-3 transition-all duration-200 ease-out text-center lg:text-left
+                py-3 lg:py-4 transition-[transform,color,opacity,text-shadow] duration-300 ease-out
+                text-center lg:text-left origin-center lg:origin-left
                 ${isCurrent ? 'lyric-current' : ''}
                 ${isAdjacent && !isCurrent ? 'lyric-adjacent' : ''}
                 ${isFar && !isCurrent ? 'lyric-distant' : ''}

@@ -42,26 +42,33 @@ body {
   box-shadow: 0 0 60px rgba(139, 92, 246, 0.3), 0 0 100px rgba(236, 72, 153, 0.2);
 }
 
-/* Karaoke-style lyrics */
+/* Karaoke-style lyrics - use transform instead of font-size to avoid layout shifts */
+.lyric-current,
+.lyric-adjacent,
+.lyric-distant {
+  font-size: 1.125rem;
+  transform-origin: center;
+  will-change: transform, opacity, color;
+}
+
 .lyric-current {
-  font-size: 1.5rem;
   font-weight: 600;
   color: #ffffff;
   text-shadow:
     0 0 20px rgba(139, 92, 246, 0.8),
     0 0 40px rgba(236, 72, 153, 0.6),
     0 0 60px rgba(139, 92, 246, 0.4);
-  transform: scale(1.05);
+  transform: scale(1.25);
 }
 
 .lyric-adjacent {
-  font-size: 1.125rem;
   color: rgba(255, 255, 255, 0.5);
+  transform: scale(1);
 }
 
 .lyric-distant {
-  font-size: 1rem;
   color: rgba(255, 255, 255, 0.25);
+  transform: scale(0.9);
 }
 
 /* Hide scrollbar but keep functionality */
