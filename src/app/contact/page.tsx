@@ -48,33 +48,6 @@ export default function ContactPage() {
             </a>
           </div>
 
-          {/* Additional options */}
-          <div className="mt-12 grid gap-6">
-            <div className="p-6 rounded-xl bg-zinc-900/30 border border-white/5">
-              <h3 className="text-lg font-semibold mb-2 flex items-center gap-3">
-                <span className="text-xl">🎵</span> Song Requests
-              </h3>
-              <p className="text-zinc-400">
-                Want us to add your favorite song? Let us know and we&apos;ll work on syncing those lyrics.
-              </p>
-            </div>
-            <div className="p-6 rounded-xl bg-zinc-900/30 border border-white/5">
-              <h3 className="text-lg font-semibold mb-2 flex items-center gap-3">
-                <span className="text-xl">🐛</span> Report an Issue
-              </h3>
-              <p className="text-zinc-400">
-                Found a bug or spotted incorrect lyrics? We appreciate you helping us improve.
-              </p>
-            </div>
-            <div className="p-6 rounded-xl bg-zinc-900/30 border border-white/5">
-              <h3 className="text-lg font-semibold mb-2 flex items-center gap-3">
-                <span className="text-xl">💡</span> Feature Ideas
-              </h3>
-              <p className="text-zinc-400">
-                Have an idea that would make SuperViber even better? We&apos;re all ears.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -82,13 +55,13 @@ export default function ContactPage() {
       <section className="py-16 px-6 bg-black border-t border-white/5">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-zinc-400 mb-6">
-            While you&apos;re here, why not check out the player?
+            Learn more about our multi-agent deliberation architecture.
           </p>
           <Link
-            href="/player"
+            href="/about"
             className="inline-flex px-8 py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-full hover:from-violet-500 hover:to-fuchsia-500 transition-all"
           >
-            Launch Player
+            How It Works
           </Link>
         </div>
       </section>

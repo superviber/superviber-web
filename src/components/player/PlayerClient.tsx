@@ -127,8 +127,8 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
                 onSeek={seekTo}
                 onPrevious={goToPrevious}
                 onNext={() => goToNext(false)}
-                songTitle={currentSong?.title}
-                artist={currentSong?.artist}
+                songTitle={lyrics.title || currentSong?.title}
+                artist={lyrics.artist || currentSong?.artist}
                 hasPlayedOnce={hasPlayedOnce}
               />
             </div>

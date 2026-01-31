@@ -51,8 +51,8 @@
     },
     {
       "videoId": "0to4Jt2Sfao",
-      "title": "Cloud Cult",
-      "artist": "Transistor Radio",
+      "title": "Transistor Radio",
+      "artist": "Cloud Cult",
       "hasLyrics": true
     },
     {
@@ -105,8 +105,8 @@
     },
     {
       "videoId": "H_G-rExSJZQ",
-      "title": "Cloud Cult Music Video",
-      "artist": "There’s So Much Energy In Us",
+      "title": "There's So Much Energy In Us",
+      "artist": "Cloud Cult",
       "hasLyrics": true
     },
     {
@@ -209,91 +209,91 @@
       "videoId": "rquqd74nx0U",
       "title": "Love Ain't Enough",
       "artist": "The Barr Brothers",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "g8uHbf0TkQY",
       "title": "A Better Son/Daughter",
-      "artist": "rilokiley",
-      "hasLyrics": false
+      "artist": "Rilo Kiley",
+      "hasLyrics": true
     },
     {
-      "videoId": "J0LsVtPp1_M",
-      "title": "Grand Machine No. 12",
+      "videoId": "Czx5VBZYfnc",
+      "title": "Grand Machine No 12",
       "artist": "Electric President",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "5ZP1iFSVdfs",
-      "title": "Jimme's Song (Full Band Version)",
-      "artist": "emanuelandthefear",
-      "hasLyrics": false
+      "title": "Jimmie's Song",
+      "artist": "Emanuel and the Fear",
+      "hasLyrics": true
     },
     {
       "videoId": "pmMNWS4T1pQ",
       "title": "Security",
       "artist": "Stop Light Observations",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "di_MwYDLTH0",
       "title": "No Mind, Never Matter",
       "artist": "ANIMA!",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
-      "videoId": "IAw23ZuDuZs",
+      "videoId": "gA2OtDUFBWI",
       "title": "California Girls",
-      "artist": "NoMBe",
-      "hasLyrics": false
+      "artist": "NoMbe x Sonny Alven",
+      "hasLyrics": true
     },
     {
       "videoId": "cpzoE7vTHPw",
       "title": "Onlysmokecigsontheweekend",
       "artist": "Walkabout",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "Xqw4wo8vdY8",
       "title": "Fineshrine",
       "artist": "Purity Ring",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "W0vpPFBuc0o",
       "title": "The Beast",
       "artist": "Cataldo",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "BSegx1n7RR0",
       "title": "Beige",
       "artist": "Yoke Lore",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "B4wtNGR4Nnk",
-      "title": "Temptation of Adam (best version)",
+      "title": "Temptation of Adam",
       "artist": "Josh Ritter",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "UbNW_JDCfWM",
-      "title": "\"Fuck Your Money\"",
+      "title": "Fuck Your Money",
       "artist": "Elohim",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "9PE0dSUEtJA",
       "title": "Love Thy Soul",
       "artist": "Calimossa - Topic",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "mmhZ1JmTwLs",
-      "title": "Watch It Grow (Lake Tahoe FPV drone video)",
+      "title": "Watch It Grow",
       "artist": "KR3TURE",
-      "hasLyrics": false
+      "hasLyrics": true
     }
   ]
 }

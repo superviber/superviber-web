@@ -53,6 +53,12 @@ export default function Home() {
             >
               Get in Touch
             </Link>
+            <Link
+              href="/player"
+              className="px-8 py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-full hover:from-violet-500 hover:to-fuchsia-500 transition-all text-lg"
+            >
+              Vibe
+            </Link>
           </div>
         </div>
 
