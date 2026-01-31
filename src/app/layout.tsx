@@ -10,14 +10,15 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SuperViber - Feel the Music, See the Words",
-  description: "Experience music like never before with synchronized lyrics that move with the beat.",
-  keywords: ["music", "lyrics", "karaoke", "playlist", "synchronized"],
+  title: "Superviber - AI Agents That Deliberate",
+  description: "Multi-agent AI architecture for complex decision-making. N+1 Alignment Dialogue orchestrates parallel expert deliberation to convergent consensus.",
+  keywords: ["AI agents", "multi-agent", "LLM", "decision-making", "alignment", "deliberation", "consensus"],
   openGraph: {
-    title: "SuperViber",
-    description: "Feel the music. See the words.",
+    title: "Superviber",
+    description: "AI agents that deliberate to consensus.",
     type: "website",
     url: "https://superviber.com",
+    images: ["/images/logo.png"],
   },
 };
 

@@ -26,7 +26,7 @@ body {
 
 /* Animated gradient background */
 .gradient-bg {
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #4c1d95 50%, #581c87 75%, #701a75 100%);
+  background: linear-gradient(135deg, #0a0812 0%, #120f24 25%, #1a1233 50%, #1f0f2e 75%, #260d28 100%);
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
 }
