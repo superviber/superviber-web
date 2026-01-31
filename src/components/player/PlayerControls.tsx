@@ -96,6 +96,19 @@ export function PlayerControls({
     [duration]
   );
 
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      if (!progressRef.current || duration === 0) return;
+
+      setIsDragging(true);
+      const rect = progressRef.current.getBoundingClientRect();
+      const touch = e.touches[0];
+      const percent = (touch.clientX - rect.left) / rect.width;
+      setDragTime(Math.max(0, Math.min(1, percent)) * duration);
+    },
+    [duration]
+  );
+
   useEffect(() => {
     if (!isDragging) return;
 
@@ -106,18 +119,30 @@ export function PlayerControls({
       setDragTime(Math.max(0, Math.min(1, percent)) * duration);
     };
 
-    const handleMouseUp = () => {
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!progressRef.current || duration === 0) return;
+      const rect = progressRef.current.getBoundingClientRect();
+      const touch = e.touches[0];
+      const percent = (touch.clientX - rect.left) / rect.width;
+      setDragTime(Math.max(0, Math.min(1, percent)) * duration);
+    };
+
+    const handleEnd = () => {
       setIsDragging(false);
       onSeek(dragTime);
       setCurrentTime(dragTime);
     };
 
     document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleEnd);
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleEnd);
     };
   }, [isDragging, dragTime, duration, onSeek]);
 
@@ -129,16 +154,19 @@ export function PlayerControls({
       {/* Progress bar */}
       <div
         ref={progressRef}
-        className="h-1 bg-zinc-700 cursor-pointer group relative"
+        className="h-6 bg-zinc-700 cursor-pointer group relative flex items-center touch-none"
         onClick={handleProgressClick}
         onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
       >
-        <div
-          className="h-full bg-gradient-to-r from-violet-500 to-pink-500 relative"
-          style={{ width: `${progress}%` }}
-        >
-          {/* Seek handle */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg" />
+        <div className="absolute inset-x-0 h-1 bg-zinc-600">
+          <div
+            className="h-full bg-gradient-to-r from-violet-500 to-pink-500 relative"
+            style={{ width: `${progress}%` }}
+          >
+            {/* Seek handle - always visible on touch devices */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg" />
+          </div>
         </div>
       </div>
 

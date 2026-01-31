@@ -69,18 +69,15 @@ export function useYouTubePlayer({
     };
   }, []);
 
-  // Initialize player when API is ready
+  // Track the current video ID in a ref to detect changes
+  const currentVideoIdRef = useRef<string | null>(null);
+
+  // Initialize player once when API is ready
   useEffect(() => {
-    if (!isAPIReady || !containerRef.current || !videoId) return;
+    if (!isAPIReady || !containerRef.current) return;
 
-    // Set to loading state during transition
-    setPlayerState('LOADING');
-
-    // Destroy existing player if any
-    if (playerRef.current) {
-      playerRef.current.destroy();
-      playerRef.current = null;
-    }
+    // Only create player once
+    if (playerRef.current) return;
 
     const player = new window.YT.Player(containerRef.current, {
       videoId,
@@ -98,6 +95,7 @@ export function useYouTubePlayer({
       } as YT.PlayerVars,
       events: {
         onReady: () => {
+          currentVideoIdRef.current = videoId;
           setPlayerState('READY');
           onReadyRef.current?.();
         },
@@ -134,7 +132,29 @@ export function useYouTubePlayer({
         playerRef.current = null;
       }
     };
-  }, [isAPIReady, videoId]); // Only recreate player when videoId changes
+  }, [isAPIReady]); // Only run once when API is ready
+
+  // Handle video ID changes by loading new video (preserves user gesture on iOS)
+  useEffect(() => {
+    if (!playerRef.current || !videoId) return;
+    if (currentVideoIdRef.current === videoId) return;
+
+    // Set to loading state during transition
+    setPlayerState('LOADING');
+    currentVideoIdRef.current = videoId;
+
+    // Use loadVideoById to switch videos - this preserves the user gesture context on iOS
+    // Cast to any because @types/youtube doesn't include these methods
+    const player = playerRef.current as YT.Player & {
+      loadVideoById: (videoId: string) => void;
+      cueVideoById: (videoId: string) => void;
+    };
+    if (autoplayRef.current) {
+      player.loadVideoById(videoId);
+    } else {
+      player.cueVideoById(videoId);
+    }
+  }, [videoId]);
 
   const getCurrentTime = useCallback((): number => {
     // Check if player exists and has getCurrentTime method (player might be in transition)
