@@ -235,7 +235,7 @@ export function LyricsEditor() {
       const res = await fetch(`/data/lyrics/${song.videoId}.lrc`);
       if (res.ok) {
         const lrc = await res.text();
-        parseLrc(lrc);
+        parseLrc(lrc, song);
       }
     } catch (err) {
       // No existing lyrics
@@ -247,7 +247,7 @@ export function LyricsEditor() {
     }, 100);
   }
 
-  function parseLrc(lrc: string) {
+  function parseLrc(lrc: string, song: Song) {
     const parsed: LyricLine[] = [];
     // Match various LRC timestamp formats:
     // [mm:ss.xx], [mm:ss:xx], [mm:ss], [m:ss.xx]
@@ -256,15 +256,18 @@ export function LyricsEditor() {
     const titleRegex = /^\[ti:(.+)\]$/i;
     const artistRegex = /^\[ar:(.+)\]$/i;
 
+    let foundTitle = song.title;
+    let foundArtist = song.artist;
+
     for (const line of lrc.split('\n')) {
       const titleMatch = line.match(titleRegex);
       if (titleMatch) {
-        setLrcTitle(titleMatch[1].trim());
+        foundTitle = titleMatch[1].trim();
         continue;
       }
       const artistMatch = line.match(artistRegex);
       if (artistMatch) {
-        setLrcArtist(artistMatch[1].trim());
+        foundArtist = artistMatch[1].trim();
         continue;
       }
 
@@ -280,6 +283,17 @@ export function LyricsEditor() {
         parsed.push({ time: null, text: line.trim() });
       }
     }
+
+    // Update title/artist state
+    setLrcTitle(foundTitle);
+    setLrcArtist(foundArtist);
+
+    // Update songs list to reflect LRC metadata
+    const updatedSong = { ...song, title: foundTitle, artist: foundArtist };
+    setSelectedSong(updatedSong);
+    setSongs(prev =>
+      prev.map(s => s.videoId === song.videoId ? updatedSong : s)
+    );
 
     const sorted = sortLinesByTime(parsed);
     setLines(sorted);
@@ -309,7 +323,7 @@ export function LyricsEditor() {
       if (lrclibRes.ok) {
         const data = await lrclibRes.json();
         if (data.syncedLyrics) {
-          parseLrc(data.syncedLyrics);
+          parseLrc(data.syncedLyrics, selectedSong);
           setFetchStatus('✓ Found synced lyrics (LRCLIB)');
           return;
         } else if (data.plainLyrics) {
