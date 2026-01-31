@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Song {
   videoId: string;
@@ -29,12 +29,17 @@ export function LyricsEditor() {
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [fetchStatus, setFetchStatus] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-  const [mode, setMode] = useState<'edit' | 'sync'>('edit');
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error' | null>(null);
+  const [mode, setMode] = useState<'edit' | 'sync'>('sync'); // Start in sync mode
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingText, setEditingText] = useState('');
+  const [plainTextDirty, setPlainTextDirty] = useState(false); // Track if user edited text
 
   const playerRef = useRef<YT.Player | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const timeUpdateRef = useRef<number | null>(null);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isInitialLoadRef = useRef(true);
 
   // Load songs on mount
   useEffect(() => {
@@ -111,6 +116,89 @@ export function LyricsEditor() {
     };
   }, [isPlaying]);
 
+  // Auto-save effect - debounced save when lines change
+  useEffect(() => {
+    // Skip initial load
+    if (isInitialLoadRef.current) {
+      return;
+    }
+
+    // Only save if we have a song selected and at least one timed line
+    if (!selectedSong || lines.length === 0) {
+      return;
+    }
+
+    const timedLines = lines.filter(l => l.time !== null);
+    if (timedLines.length === 0) {
+      return;
+    }
+
+    // Clear existing timeout
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Debounce save by 500ms
+    saveTimeoutRef.current = setTimeout(() => {
+      autoSave();
+    }, 500);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [lines, selectedSong]);
+
+  async function autoSave() {
+    if (!selectedSong) return;
+
+    const timedLines = lines.filter(l => l.time !== null);
+    if (timedLines.length === 0) return;
+
+    setSaveStatus('saving');
+
+    try {
+      const lrc = generateLrc();
+      const res = await fetch('/api/admin/save-lyrics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          videoId: selectedSong.videoId,
+          lrc,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Save failed');
+
+      // Update songs.json hasLyrics if not already set
+      if (!selectedSong.hasLyrics) {
+        await fetch('/api/admin/update-song-lyrics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            videoId: selectedSong.videoId,
+            hasLyrics: true,
+          }),
+        });
+
+        // Update local state
+        setSelectedSong({ ...selectedSong, hasLyrics: true });
+        setSongs(prev =>
+          prev.map(s =>
+            s.videoId === selectedSong.videoId ? { ...s, hasLyrics: true } : s
+          )
+        );
+      }
+
+      setSaveStatus('saved');
+      // Clear status after 2 seconds
+      setTimeout(() => setSaveStatus(null), 2000);
+    } catch (err) {
+      setSaveStatus('error');
+    }
+  }
+
   async function loadSongs() {
     try {
       const res = await fetch('/data/songs.json');
@@ -124,10 +212,13 @@ export function LyricsEditor() {
   }
 
   async function selectSong(song: Song) {
+    isInitialLoadRef.current = true; // Mark as loading
     setSelectedSong(song);
     setLines([]);
     setPlainText('');
-    setMode('edit');
+    setPlainTextDirty(false);
+    setMode('sync'); // Start in sync mode to show timestamps
+    setSaveStatus(null);
 
     // Try to load existing LRC
     try {
@@ -139,6 +230,11 @@ export function LyricsEditor() {
     } catch (err) {
       // No existing lyrics
     }
+
+    // Allow auto-save after initial load completes
+    setTimeout(() => {
+      isInitialLoadRef.current = false;
+    }, 100);
   }
 
   function parseLrc(lrc: string) {
@@ -163,6 +259,7 @@ export function LyricsEditor() {
 
     setLines(parsed);
     setPlainText(parsed.map(l => l.text).join('\n'));
+    setPlainTextDirty(false);
   }
 
   function parseTextToLines(text: string) {
@@ -250,47 +347,55 @@ export function LyricsEditor() {
     return lrc;
   }
 
-  async function saveLyrics() {
-    if (!selectedSong) return;
 
-    setSaving(true);
+  function deleteLine(index: number) {
+    const newLines = lines.filter((_, i) => i !== index);
+    setLines(newLines);
+    setPlainText(newLines.map(l => l.text).join('\n'));
+  }
 
-    try {
-      const lrc = generateLrc();
-      const res = await fetch('/api/admin/save-lyrics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          videoId: selectedSong.videoId,
-          lrc,
-        }),
-      });
+  function splitLine(index: number) {
+    // Insert a new empty line after the current one
+    const newLines = [...lines];
+    const currentLine = newLines[index];
+    newLines.splice(index + 1, 0, { time: null, text: '' });
+    setLines(newLines);
+    setPlainText(newLines.map(l => l.text).join('\n'));
+  }
 
-      if (!res.ok) throw new Error('Save failed');
+  function updateLineText(index: number, text: string) {
+    const newLines = [...lines];
+    newLines[index] = { ...newLines[index], text };
+    setLines(newLines);
+    setPlainText(newLines.map(l => l.text).join('\n'));
+  }
 
-      // Update songs.json hasLyrics
-      await fetch('/api/admin/update-song-lyrics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          videoId: selectedSong.videoId,
-          hasLyrics: true,
-        }),
-      });
+  function saveEdit() {
+    if (editingIndex !== null) {
+      const textLines = editingText.split('\n').map(t => t.trim());
 
-      // Update local state
-      setSelectedSong({ ...selectedSong, hasLyrics: true });
-      setSongs(prev =>
-        prev.map(s =>
-          s.videoId === selectedSong.videoId ? { ...s, hasLyrics: true } : s
-        )
-      );
+      if (textLines.length === 1) {
+        // Single line - just update
+        updateLineText(editingIndex, textLines[0]);
+      } else {
+        // Multiple lines - replace current line and insert new ones
+        const newLines = [...lines];
+        const currentTime = newLines[editingIndex].time;
 
-      setFetchStatus('✓ Saved');
-    } catch (err) {
-      setFetchStatus('Save failed');
-    } finally {
-      setSaving(false);
+        // Replace the current line with first text line
+        newLines[editingIndex] = { time: currentTime, text: textLines[0] };
+
+        // Insert remaining lines after
+        for (let i = 1; i < textLines.length; i++) {
+          newLines.splice(editingIndex + i, 0, { time: null, text: textLines[i] });
+        }
+
+        setLines(newLines);
+        setPlainText(newLines.map(l => l.text).join('\n'));
+      }
+
+      setEditingIndex(null);
+      setEditingText('');
     }
   }
 
@@ -361,9 +466,37 @@ export function LyricsEditor() {
                 </button>
                 <button
                   onClick={() => {
-                    // Only parse plainText if we don't already have lines with timestamps
-                    if (mode === 'edit' && !lines.some(l => l.time !== null)) {
-                      parseTextToLines(plainText);
+                    // Only re-parse if user actually edited the text
+                    if (mode === 'edit' && plainTextDirty) {
+                      // Merge edited text with existing timestamps
+                      // Build a map of text -> list of timestamps (to handle duplicates)
+                      const timestampMap = new Map<string, number[]>();
+                      lines.forEach(l => {
+                        if (l.time !== null && l.text) {
+                          const existing = timestampMap.get(l.text) || [];
+                          existing.push(l.time);
+                          timestampMap.set(l.text, existing);
+                        }
+                      });
+
+                      // Parse plainText and preserve timestamps for matching lines
+                      const usedTimestamps = new Map<string, number>();
+                      const newLines = plainText.split('\n').map(text => {
+                        const trimmed = text.trim();
+                        const timestamps = timestampMap.get(trimmed);
+                        let time: number | null = null;
+                        if (timestamps && timestamps.length > 0) {
+                          const usedCount = usedTimestamps.get(trimmed) || 0;
+                          if (usedCount < timestamps.length) {
+                            time = timestamps[usedCount];
+                            usedTimestamps.set(trimmed, usedCount + 1);
+                          }
+                        }
+                        return { time, text: trimmed };
+                      });
+
+                      setLines(newLines);
+                      setPlainTextDirty(false);
                     }
                     setMode('sync');
                   }}
@@ -385,18 +518,48 @@ export function LyricsEditor() {
               </button>
 
               {mode === 'sync' && (
-                <div className="text-xs text-zinc-500">
-                  {timedCount}/{lines.length} timed
-                </div>
+                <>
+                  <button
+                    onClick={() => {
+                      if (!playerRef.current?.getCurrentTime) return;
+                      const currentTime = playerRef.current.getCurrentTime();
+
+                      // Find the right position to insert (sorted by time)
+                      let insertIndex = 0;
+                      for (let i = 0; i < lines.length; i++) {
+                        if (lines[i].time !== null && lines[i].time! <= currentTime) {
+                          insertIndex = i + 1;
+                        }
+                      }
+
+                      const newLines = [...lines];
+                      newLines.splice(insertIndex, 0, { time: currentTime, text: '' });
+                      setLines(newLines);
+                      setPlainText(newLines.map(l => l.text).join('\n'));
+                    }}
+                    className="px-2 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 rounded"
+                    title="Add instrumental break at current time"
+                  >
+                    + ♪
+                  </button>
+                  <div className="text-xs text-zinc-500">
+                    {timedCount}/{lines.length} timed
+                  </div>
+                </>
               )}
 
-              <button
-                onClick={saveLyrics}
-                disabled={saving || timedCount === 0}
-                className="px-4 py-1 text-xs bg-green-600 hover:bg-green-500 disabled:bg-zinc-700 disabled:text-zinc-500 rounded"
-              >
-                {saving ? 'Saving...' : 'Save LRC'}
-              </button>
+              {/* Auto-save status indicator */}
+              {saveStatus && (
+                <div className={`text-xs px-2 py-1 rounded ${
+                  saveStatus === 'saving' ? 'text-zinc-400' :
+                  saveStatus === 'saved' ? 'text-green-400' :
+                  'text-red-400'
+                }`}>
+                  {saveStatus === 'saving' ? 'Saving...' :
+                   saveStatus === 'saved' ? '✓ Saved' :
+                   '✕ Save failed'}
+                </div>
+              )}
             </div>
 
             {fetchStatus && (
@@ -410,27 +573,85 @@ export function LyricsEditor() {
               {mode === 'edit' ? (
                 <textarea
                   value={plainText}
-                  onChange={e => setPlainText(e.target.value)}
+                  onChange={e => {
+                    setPlainText(e.target.value);
+                    setPlainTextDirty(true);
+                  }}
                   placeholder="Paste lyrics here, one line per row..."
                   className="w-full h-full bg-transparent resize-none focus:outline-none text-sm font-mono"
                 />
               ) : (
                 <div className="space-y-1">
                   {lines.map((line, i) => (
-                    <button
+                    <div
                       key={i}
-                      onClick={() => markTimestamp(i)}
-                      className={`w-full text-left px-3 py-2 rounded transition-colors flex items-center gap-3 ${
+                      className={`rounded transition-colors flex items-start gap-2 ${
                         line.time !== null
                           ? 'bg-green-600/10 hover:bg-green-600/20'
                           : 'bg-zinc-800/50 hover:bg-zinc-800'
                       }`}
                     >
-                      <span className="text-xs font-mono w-16 text-zinc-500">
+                      {/* Timestamp button */}
+                      <button
+                        onClick={() => markTimestamp(i)}
+                        className="px-3 py-2 text-xs font-mono w-20 text-zinc-500 hover:text-white hover:bg-white/10 rounded-l"
+                        title="Click to set timestamp"
+                      >
                         {line.time !== null ? formatTime(line.time) : '--:--.--'}
-                      </span>
-                      <span className="text-sm">{line.text || '♪'}</span>
-                    </button>
+                      </button>
+
+                      {/* Text - editable or display */}
+                      {editingIndex === i ? (
+                        <textarea
+                          value={editingText}
+                          onChange={e => setEditingText(e.target.value)}
+                          onBlur={saveEdit}
+                          onKeyDown={e => {
+                            if (e.key === 'Enter' && e.metaKey) {
+                              e.preventDefault();
+                              saveEdit();
+                            }
+                            if (e.key === 'Escape') {
+                              setEditingIndex(null);
+                              setEditingText('');
+                            }
+                          }}
+                          autoFocus
+                          rows={Math.max(2, editingText.split('\n').length)}
+                          className="flex-1 bg-zinc-700 px-2 py-1 text-sm rounded outline-none resize-none"
+                          placeholder="Enter lyrics (one line per row, ⌘+Enter to save)"
+                        />
+                      ) : (
+                        <span
+                          className="flex-1 text-sm cursor-pointer hover:text-violet-300 py-2"
+                          onClick={() => {
+                            setEditingIndex(i);
+                            setEditingText(line.text);
+                          }}
+                          title="Click to edit"
+                        >
+                          {line.text || '♪'}
+                        </span>
+                      )}
+
+                      {/* Action buttons */}
+                      <div className="flex gap-1 pr-2">
+                        <button
+                          onClick={() => splitLine(i)}
+                          className="p-1 text-zinc-500 hover:text-white hover:bg-white/10 rounded text-xs"
+                          title="Insert line after"
+                        >
+                          ↵
+                        </button>
+                        <button
+                          onClick={() => deleteLine(i)}
+                          className="p-1 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded text-xs"
+                          title="Delete line"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}
