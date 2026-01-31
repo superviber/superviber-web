@@ -34,6 +34,8 @@ export function LyricsEditor() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingText, setEditingText] = useState('');
   const [plainTextDirty, setPlainTextDirty] = useState(false); // Track if user edited text
+  const [lrcTitle, setLrcTitle] = useState('');
+  const [lrcArtist, setLrcArtist] = useState('');
 
   const playerRef = useRef<YT.Player | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -148,7 +150,7 @@ export function LyricsEditor() {
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [lines, selectedSong]);
+  }, [lines, selectedSong, lrcTitle, lrcArtist]);
 
   async function autoSave() {
     if (!selectedSong) return;
@@ -219,6 +221,8 @@ export function LyricsEditor() {
     setPlainTextDirty(false);
     setMode('sync'); // Start in sync mode to show timestamps
     setSaveStatus(null);
+    setLrcTitle(song.title);
+    setLrcArtist(song.artist);
 
     // Try to load existing LRC
     try {
@@ -242,8 +246,22 @@ export function LyricsEditor() {
     // Match various LRC timestamp formats:
     // [mm:ss.xx], [mm:ss:xx], [mm:ss], [m:ss.xx]
     const lineRegex = /^\[(\d{1,2}):(\d{2})(?:[.:](\d{2,3}))?\]\s*(.*)$/;
+    // Match metadata tags like [ti:Title] and [ar:Artist]
+    const titleRegex = /^\[ti:(.+)\]$/i;
+    const artistRegex = /^\[ar:(.+)\]$/i;
 
     for (const line of lrc.split('\n')) {
+      const titleMatch = line.match(titleRegex);
+      if (titleMatch) {
+        setLrcTitle(titleMatch[1].trim());
+        continue;
+      }
+      const artistMatch = line.match(artistRegex);
+      if (artistMatch) {
+        setLrcArtist(artistMatch[1].trim());
+        continue;
+      }
+
       const match = line.match(lineRegex);
       if (match) {
         const mins = parseInt(match[1]);
@@ -350,7 +368,7 @@ export function LyricsEditor() {
   function generateLrc(): string {
     if (!selectedSong) return '';
 
-    let lrc = `[ti:${selectedSong.title}]\n[ar:${selectedSong.artist}]\n\n`;
+    let lrc = `[ti:${lrcTitle}]\n[ar:${lrcArtist}]\n\n`;
 
     for (const line of lines) {
       if (line.time !== null) {
@@ -466,12 +484,24 @@ export function LyricsEditor() {
             <div className="aspect-video bg-black" ref={containerRef}>
               <div id="yt-player" className="w-full h-full" />
             </div>
-            <div className="px-4 py-3 border-t border-zinc-800 flex items-center justify-between">
-              <div>
-                <div className="font-medium">{selectedSong.title}</div>
-                <div className="text-sm text-zinc-500">{selectedSong.artist}</div>
+            <div className="px-4 py-3 border-t border-zinc-800 flex items-center justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <input
+                  type="text"
+                  value={lrcTitle}
+                  onChange={e => setLrcTitle(e.target.value)}
+                  className="w-full bg-transparent font-medium focus:outline-none focus:bg-zinc-800 px-1 -mx-1 rounded"
+                  placeholder="Title"
+                />
+                <input
+                  type="text"
+                  value={lrcArtist}
+                  onChange={e => setLrcArtist(e.target.value)}
+                  className="w-full bg-transparent text-sm text-zinc-500 focus:outline-none focus:bg-zinc-800 focus:text-zinc-300 px-1 -mx-1 rounded"
+                  placeholder="Artist"
+                />
               </div>
-              <div className="text-sm font-mono text-zinc-400">
+              <div className="text-sm font-mono text-zinc-400 flex-shrink-0">
                 {formatTime(currentTime)}
               </div>
             </div>
