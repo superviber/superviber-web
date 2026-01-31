@@ -242,9 +242,10 @@ export function LyricsEditor() {
     }
 
     // Allow auto-save after initial load completes
+    // Use longer timeout to let React state updates settle
     setTimeout(() => {
       isInitialLoadRef.current = false;
-    }, 100);
+    }, 500);
   }
 
   function parseLrc(lrc: string, song: Song) {
@@ -288,12 +289,14 @@ export function LyricsEditor() {
     setLrcTitle(foundTitle);
     setLrcArtist(foundArtist);
 
-    // Update songs list to reflect LRC metadata
-    const updatedSong = { ...song, title: foundTitle, artist: foundArtist };
-    setSelectedSong(updatedSong);
-    setSongs(prev =>
-      prev.map(s => s.videoId === song.videoId ? updatedSong : s)
-    );
+    // Update songs list to reflect LRC metadata (only if changed)
+    if (foundTitle !== song.title || foundArtist !== song.artist) {
+      const updatedSong = { ...song, title: foundTitle, artist: foundArtist };
+      setSelectedSong(updatedSong);
+      setSongs(prev =>
+        prev.map(s => s.videoId === song.videoId ? updatedSong : s)
+      );
+    }
 
     const sorted = sortLinesByTime(parsed);
     setLines(sorted);

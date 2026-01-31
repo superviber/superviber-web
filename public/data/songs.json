@@ -99,9 +99,9 @@
     },
     {
       "videoId": "H_G-rExSJZQ",
-      "title": "Cloud Cult Music Video",
-      "artist": "There’s So Much Energy In Us",
-      "hasLyrics": false
+      "title": "There’s So Much Energy In Us",
+      "artist": "Cloud Cult",
+      "hasLyrics": true
     },
     {
       "videoId": "9-LI98Q-rsg",
@@ -143,7 +143,7 @@
       "videoId": "Odlw8WdsZS8",
       "title": "One",
       "artist": "Birdtalker",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "pkPH7Ge9xXU",
@@ -167,7 +167,7 @@
       "videoId": "YsvRVWIsY3s",
       "title": "Metal Fingers",
       "artist": "Electric President",
-      "hasLyrics": false
+      "hasLyrics": true
     },
     {
       "videoId": "Ii-HvEWyC-U",
