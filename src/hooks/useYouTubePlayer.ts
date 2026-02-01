@@ -117,6 +117,10 @@ export function useYouTubePlayer({
             case window.YT.PlayerState.BUFFERING:
               // Keep current state during buffering
               return;
+            case window.YT.PlayerState.CUED:
+            case -1: // UNSTARTED
+              newState = 'READY';
+              break;
             default:
               newState = 'LOADING';
           }
