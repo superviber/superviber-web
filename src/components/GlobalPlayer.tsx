@@ -93,6 +93,7 @@ export function GlobalPlayer() {
       events: {
         onReady: () => {
           setPlayerStateRef.current('READY');
+          setIsPlayerReady(true);
         },
         onStateChange: (event) => {
           switch (event.data) {
@@ -129,7 +130,6 @@ export function GlobalPlayer() {
     });
 
     _playerRef.current = player;
-    setIsPlayerReady(true);
 
     return () => {
       if (_playerRef.current) {
