@@ -577,10 +577,11 @@ export function LyricsEditor() {
                       // Build a map of text -> list of timestamps (to handle duplicates)
                       const timestampMap = new Map<string, number[]>();
                       lines.forEach(l => {
-                        if (l.time !== null && l.text) {
-                          const existing = timestampMap.get(l.text) || [];
+                        if (l.time !== null) {
+                          const key = l.text || '';  // Use empty string for blank lines
+                          const existing = timestampMap.get(key) || [];
                           existing.push(l.time);
-                          timestampMap.set(l.text, existing);
+                          timestampMap.set(key, existing);
                         }
                       });
 
@@ -623,17 +624,60 @@ export function LyricsEditor() {
               </button>
 
               {mode === 'sync' && lines.some(l => l.time !== null) && (
-                <button
-                  onClick={() => {
-                    if (!confirm('Clear all timestamps?')) return;
-                    isDirtyRef.current = true;
-                    const cleared = lines.map(l => ({ ...l, time: null }));
-                    setLines(cleared);
-                  }}
-                  className="px-3 py-1 text-xs bg-zinc-800 hover:bg-red-900 text-zinc-400 hover:text-red-300 rounded"
-                >
-                  Clear Timing
-                </button>
+                <>
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="number"
+                      step="0.1"
+                      placeholder="±sec"
+                      className="w-16 px-2 py-1 text-xs bg-zinc-800 rounded text-center focus:outline-none focus:ring-1 focus:ring-zinc-600"
+                      id="time-shift-input"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          const input = e.currentTarget;
+                          const shift = parseFloat(input.value);
+                          if (isNaN(shift) || shift === 0) return;
+                          isDirtyRef.current = true;
+                          const shifted = lines.map(l => ({
+                            ...l,
+                            time: l.time !== null ? Math.max(0, l.time + shift) : null
+                          }));
+                          setLines(shifted);
+                          input.value = '';
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        const input = document.getElementById('time-shift-input') as HTMLInputElement;
+                        const shift = parseFloat(input?.value || '0');
+                        if (isNaN(shift) || shift === 0) return;
+                        isDirtyRef.current = true;
+                        const shifted = lines.map(l => ({
+                          ...l,
+                          time: l.time !== null ? Math.max(0, l.time + shift) : null
+                        }));
+                        setLines(shifted);
+                        input.value = '';
+                      }}
+                      className="px-2 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 rounded"
+                      title="Shift all timestamps by entered amount"
+                    >
+                      Shift
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (!confirm('Clear all timestamps?')) return;
+                      isDirtyRef.current = true;
+                      const cleared = lines.map(l => ({ ...l, time: null }));
+                      setLines(cleared);
+                    }}
+                    className="px-3 py-1 text-xs bg-zinc-800 hover:bg-red-900 text-zinc-400 hover:text-red-300 rounded"
+                  >
+                    Clear Timing
+                  </button>
+                </>
               )}
 
               {mode === 'sync' && (
