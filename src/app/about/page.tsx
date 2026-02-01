@@ -60,8 +60,105 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* The Solution: Alignment Dialogue */}
+      {/* Calibrated to Your Domain */}
       <section className="py-20 px-6 bg-black">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4 text-center">Calibrated to <span className="gradient-text">Your Domain</span></h2>
+          <p className="text-center text-zinc-400 mb-12 max-w-2xl mx-auto">
+            You define the ethos. You set the principles. The system adapts to your domain.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* ADRs / Principles */}
+            <div className="p-6 rounded-xl bg-zinc-900/50 border border-white/5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold">Your Operating Principles</h3>
+              </div>
+              <p className="text-zinc-400 text-sm mb-4">
+                Your operating principles become constitutional documents that define your
+                domain ethos. Before any deliberation begins, all expert agents receive these as
+                grounding context.
+              </p>
+              <div className="space-y-2 text-xs">
+                <div className="py-2 px-3 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-between">
+                  <span>&ldquo;Security over convenience&rdquo;</span>
+                  <span className="text-violet-400 text-[10px] uppercase tracking-wide">Software</span>
+                </div>
+                <div className="py-2 px-3 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-between">
+                  <span>&ldquo;Patient safety above efficiency&rdquo;</span>
+                  <span className="text-emerald-400 text-[10px] uppercase tracking-wide">Healthcare</span>
+                </div>
+                <div className="py-2 px-3 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-between">
+                  <span>&ldquo;Accessibility is a requirement&rdquo;</span>
+                  <span className="text-fuchsia-400 text-[10px] uppercase tracking-wide">Product</span>
+                </div>
+                <div className="py-2 px-3 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-between">
+                  <span>&ldquo;Precedent awareness required&rdquo;</span>
+                  <span className="text-amber-400 text-[10px] uppercase tracking-wide">Legal</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Adaptive Expert Selection */}
+            <div className="p-6 rounded-xl bg-zinc-900/50 border border-white/5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-fuchsia-500/20 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-fuchsia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold">Adaptive Expert Selection</h3>
+              </div>
+              <p className="text-zinc-400 text-sm mb-4">
+                Experts are dynamically selected based on the problem domain. Each panel includes
+                core experts, adjacent perspectives, and wildcards for fresh thinking.
+              </p>
+              <div className="space-y-3 text-xs">
+                <div>
+                  <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Software</span>
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    <span className="py-1 px-2 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">Security</span>
+                    <span className="py-1 px-2 rounded bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30">Performance</span>
+                    <span className="py-1 px-2 rounded bg-pink-500/20 text-pink-300 border border-pink-500/30">UX</span>
+                  </div>
+                </div>
+                <div>
+                  <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Healthcare</span>
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    <span className="py-1 px-2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Clinical</span>
+                    <span className="py-1 px-2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Ethics</span>
+                    <span className="py-1 px-2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Regulatory</span>
+                  </div>
+                </div>
+                <div>
+                  <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Legal</span>
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    <span className="py-1 px-2 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Precedent</span>
+                    <span className="py-1 px-2 rounded bg-orange-500/20 text-orange-300 border border-orange-500/30">Compliance</span>
+                    <span className="py-1 px-2 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">Stakeholder</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-xl bg-gradient-to-r from-violet-950/30 to-fuchsia-950/30 border border-violet-500/20 text-center">
+            <p className="text-zinc-300">
+              <span className="font-semibold text-white">Your principles shape every deliberation.</span>
+              {' '}Experts don&apos;t just analyze—they reason within the constraints you define,
+              ensuring recommendations align with your stated philosophy.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* The Solution: Alignment Dialogue */}
+      <section className="py-20 px-6 bg-zinc-950">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-6 text-center">The Alignment Dialogue</h2>
           <p className="text-center text-zinc-400 mb-12 max-w-2xl mx-auto">
@@ -239,103 +336,6 @@ export default function AboutPage() {
             </div>
           </div>
 
-        </div>
-      </section>
-
-      {/* Calibrated to Your Domain */}
-      <section className="py-20 px-6 bg-zinc-950">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4 text-center">Calibrated to <span className="gradient-text">Your Domain</span></h2>
-          <p className="text-center text-zinc-400 mb-12 max-w-2xl mx-auto">
-            You define the ethos. You set the principles. The system adapts to your domain.
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {/* ADRs / Principles */}
-            <div className="p-6 rounded-xl bg-zinc-900/50 border border-white/5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold">Your Operating Principles</h3>
-              </div>
-              <p className="text-zinc-400 text-sm mb-4">
-                Your operating principles become constitutional documents that define your
-                domain ethos. Before any deliberation begins, all expert agents receive these as
-                grounding context.
-              </p>
-              <div className="space-y-2 text-xs">
-                <div className="py-2 px-3 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-between">
-                  <span>&ldquo;Security over convenience&rdquo;</span>
-                  <span className="text-violet-400 text-[10px] uppercase tracking-wide">Software</span>
-                </div>
-                <div className="py-2 px-3 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-between">
-                  <span>&ldquo;Patient safety above efficiency&rdquo;</span>
-                  <span className="text-emerald-400 text-[10px] uppercase tracking-wide">Healthcare</span>
-                </div>
-                <div className="py-2 px-3 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-between">
-                  <span>&ldquo;Accessibility is a requirement&rdquo;</span>
-                  <span className="text-fuchsia-400 text-[10px] uppercase tracking-wide">Product</span>
-                </div>
-                <div className="py-2 px-3 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-between">
-                  <span>&ldquo;Precedent awareness required&rdquo;</span>
-                  <span className="text-amber-400 text-[10px] uppercase tracking-wide">Legal</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Adaptive Expert Selection */}
-            <div className="p-6 rounded-xl bg-zinc-900/50 border border-white/5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-fuchsia-500/20 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-fuchsia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold">Adaptive Expert Selection</h3>
-              </div>
-              <p className="text-zinc-400 text-sm mb-4">
-                Experts are dynamically selected based on the problem domain. Each panel includes
-                core experts, adjacent perspectives, and wildcards for fresh thinking.
-              </p>
-              <div className="space-y-3 text-xs">
-                <div>
-                  <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Software</span>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    <span className="py-1 px-2 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">Security</span>
-                    <span className="py-1 px-2 rounded bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30">Performance</span>
-                    <span className="py-1 px-2 rounded bg-pink-500/20 text-pink-300 border border-pink-500/30">UX</span>
-                  </div>
-                </div>
-                <div>
-                  <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Healthcare</span>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    <span className="py-1 px-2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Clinical</span>
-                    <span className="py-1 px-2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Ethics</span>
-                    <span className="py-1 px-2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Regulatory</span>
-                  </div>
-                </div>
-                <div>
-                  <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Legal</span>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    <span className="py-1 px-2 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Precedent</span>
-                    <span className="py-1 px-2 rounded bg-orange-500/20 text-orange-300 border border-orange-500/30">Compliance</span>
-                    <span className="py-1 px-2 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">Stakeholder</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 rounded-xl bg-gradient-to-r from-violet-950/30 to-fuchsia-950/30 border border-violet-500/20 text-center">
-            <p className="text-zinc-300">
-              <span className="font-semibold text-white">Your principles shape every deliberation.</span>
-              {' '}Experts don&apos;t just analyze—they reason within the constraints you define,
-              ensuring recommendations align with your stated philosophy.
-            </p>
-          </div>
         </div>
       </section>
 
