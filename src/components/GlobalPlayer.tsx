@@ -26,6 +26,7 @@ export function GlobalPlayer() {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isAPIReady, setIsAPIReady] = useState(false);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
   const currentVideoIdRef = useRef<string | null>(null);
   const hasInitializedRef = useRef(false);
   const pendingAutoplayRef = useRef(false);
@@ -128,12 +129,14 @@ export function GlobalPlayer() {
     });
 
     _playerRef.current = player;
+    setIsPlayerReady(true);
 
     return () => {
       if (_playerRef.current) {
         _playerRef.current.destroy();
         _playerRef.current = null;
         hasInitializedRef.current = false;
+        setIsPlayerReady(false);
       }
     };
   }, [isAPIReady, _playerRef]);
@@ -160,7 +163,7 @@ export function GlobalPlayer() {
 
     // Always use cueVideoById and let the CUED handler trigger play if needed
     player.cueVideoById(currentVideoId);
-  }, [currentVideoId, _playerRef, _shouldAutoplayRef]);
+  }, [currentVideoId, _playerRef, _shouldAutoplayRef, isPlayerReady]);
 
   // Position the player wrapper to match the video target
   useEffect(() => {
