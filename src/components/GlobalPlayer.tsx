@@ -67,16 +67,16 @@ export function GlobalPlayer() {
     };
   }, []);
 
-  // Initialize player when API ready and we have a video
+  // Initialize player when API ready - only runs once
+  // Video changes are handled by the video change effect via cueVideoById
   useEffect(() => {
-    if (!isAPIReady || !containerRef.current || !currentVideoId) return;
+    if (!isAPIReady || !containerRef.current) return;
     if (hasInitializedRef.current) return;
 
     hasInitializedRef.current = true;
-    currentVideoIdRef.current = currentVideoId;
 
+    // Create player without an initial video - we'll load it via the video change effect
     const player = new window.YT.Player(containerRef.current, {
-      videoId: currentVideoId,
       width: '100%',
       height: '100%',
       playerVars: {
@@ -136,25 +136,12 @@ export function GlobalPlayer() {
         hasInitializedRef.current = false;
       }
     };
-  }, [isAPIReady, currentVideoId, _playerRef]); // Removed callback dependencies
+  }, [isAPIReady, _playerRef]);
 
-  // Handle video ID changes
+  // Handle video ID changes (including initial load)
   useEffect(() => {
-    console.log('Video ID change effect:', {
-      hasPlayer: !!_playerRef.current,
-      currentVideoId,
-      prevVideoId: currentVideoIdRef.current,
-      shouldAutoplay: _shouldAutoplayRef.current,
-    });
-
-    if (!_playerRef.current || !currentVideoId) {
-      console.log('Early return: no player or no videoId');
-      return;
-    }
-    if (currentVideoIdRef.current === currentVideoId) {
-      console.log('Early return: same video ID');
-      return;
-    }
+    if (!_playerRef.current || !currentVideoId) return;
+    if (currentVideoIdRef.current === currentVideoId) return;
 
     currentVideoIdRef.current = currentVideoId;
     setPlayerStateRef.current('LOADING');
@@ -167,11 +154,8 @@ export function GlobalPlayer() {
     // Check the autoplay ref synchronously - it was set before the videoId state update
     // Using a ref avoids React batching race conditions
     if (_shouldAutoplayRef.current) {
-      console.log('Setting pendingAutoplayRef for', currentVideoId);
       pendingAutoplayRef.current = true;
-      _shouldAutoplayRef.current = false;  // Clear it
-    } else {
-      console.log('shouldAutoplayRef is false, not setting pending');
+      _shouldAutoplayRef.current = false;
     }
 
     // Always use cueVideoById and let the CUED handler trigger play if needed

@@ -168,7 +168,6 @@ export function PlayerProvider({ children }: PlayerProviderProps) {
 
   const selectSong = useCallback((videoId: string, autoplay = true) => {
     if (videoId === currentVideoId) return;
-    console.log('selectSong:', { videoId, autoplay });
     shouldAutoplayRef.current = autoplay;  // Ref updates synchronously
     setCurrentVideoId(videoId);
     setHasPlayedOnce(false);
