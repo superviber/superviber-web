@@ -143,7 +143,7 @@ export function GlobalPlayer() {
 
   // Handle video ID changes (including initial load)
   useEffect(() => {
-    if (!_playerRef.current || !currentVideoId) return;
+    if (!isPlayerReady || !_playerRef.current || !currentVideoId) return;
     if (currentVideoIdRef.current === currentVideoId) return;
 
     currentVideoIdRef.current = currentVideoId;
