@@ -30,10 +30,10 @@ export default function Footer() {
                 alt="Superviber"
                 width={100}
                 height={24}
-                className="h-4 w-auto"
+                className="h-7 w-auto"
               />
             </Link>
-            <p className="text-zinc-500 text-sm mt-2">AI agents that deliberate to consensus.</p>
+            <p className="text-zinc-500 text-sm mt-2">Coordinated intelligence for complex decisions.</p>
           </div>
           <div className="flex gap-8 text-sm text-zinc-400">
             <Link href="/about" className="hover:text-white transition-colors">About</Link>

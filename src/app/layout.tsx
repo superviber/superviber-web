@@ -11,12 +11,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Superviber - AI Agents That Deliberate",
-  description: "Multi-agent AI architecture for complex decision-making. N+1 Alignment Dialogue orchestrates parallel expert deliberation to convergent consensus.",
+  title: "Superviber - Coordinated Intelligence",
+  description: "Coordinated intelligence for complex decisions. Multi-agent deliberation architecture that orchestrates expert perspectives to convergent consensus.",
   keywords: ["AI agents", "multi-agent", "LLM", "decision-making", "alignment", "deliberation", "consensus"],
   openGraph: {
     title: "Superviber",
-    description: "AI agents that deliberate to consensus.",
+    description: "Coordinated intelligence for complex decisions.",
     type: "website",
     url: "https://superviber.com",
     images: ["/images/logo.png"],

@@ -77,30 +77,12 @@ export default function Home() {
             Complex Decisions Deserve <span className="gradient-text">Multiple Minds</span>
           </h2>
           <p className="text-xl text-zinc-300 mb-12 max-w-2xl mx-auto">
-            A single analyst sees one part of the elephant. Our N+1 architecture coordinates
+            A single analyst sees one part of the elephant. Our architecture coordinates
             multiple expert agents that deliberate simultaneously, then converge on recommendations
             backed by transparent reasoning.
           </p>
 
-          {/* Mini architecture visual */}
-          <div className="max-w-xl mx-auto">
-            <div className="flex flex-col items-center">
-              <div className="w-32 py-3 rounded-xl bg-zinc-800 border-2 border-violet-500 text-center text-sm font-semibold mb-6 text-violet-300">
-                Judge
-              </div>
-              <div className="grid grid-cols-4 gap-3 w-full">
-                {['Expert 1', 'Expert 2', 'Expert 3', 'Expert N'].map((expert) => (
-                  <div
-                    key={expert}
-                    className="py-2 px-2 rounded-lg bg-zinc-800 border border-zinc-700 text-center text-xs"
-                  >
-                    {expert}
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Features Section */}
@@ -109,38 +91,44 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
             Why <span className="gradient-text">Superviber</span>?
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-2xl bg-zinc-900/50 border border-white/5 hover:border-violet-500/30 transition-colors">
-              <div className="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-zinc-900/50 border border-white/5 hover:border-violet-500/30 transition-colors">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold">Parallel Deliberation</h3>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Parallel Deliberation</h3>
-              <p className="text-zinc-400">
+              <p className="text-zinc-400 text-sm">
                 All expert agents analyze simultaneously. No first-mover bias, no anchoring effects.
               </p>
             </div>
-            <div className="p-8 rounded-2xl bg-zinc-900/50 border border-white/5 hover:border-fuchsia-500/30 transition-colors">
-              <div className="w-12 h-12 rounded-xl bg-fuchsia-500/20 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-fuchsia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
+            <div className="p-6 rounded-2xl bg-zinc-900/50 border border-white/5 hover:border-fuchsia-500/30 transition-colors">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-fuchsia-500/20 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-fuchsia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold">Transparent Reasoning</h3>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Transparent Reasoning</h3>
-              <p className="text-zinc-400">
+              <p className="text-zinc-400 text-sm">
                 Full audit trail of every perspective, tension, and resolution. Know exactly why.
               </p>
             </div>
-            <div className="p-8 rounded-2xl bg-zinc-900/50 border border-white/5 hover:border-pink-500/30 transition-colors">
-              <div className="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                </svg>
+            <div className="p-6 rounded-2xl bg-zinc-900/50 border border-white/5 hover:border-emerald-500/30 transition-colors">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold">Your Data, Your Control</h3>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Convergent Consensus</h3>
-              <p className="text-zinc-400">
-                Velocity-based convergence detection. The system knows when alignment is achieved.
+              <p className="text-zinc-400 text-sm">
+                Zero knowledge architecture. Your data never leaves your infrastructure.
               </p>
             </div>
           </div>
@@ -154,7 +142,7 @@ export default function Home() {
             <span className="gradient-text">Open Research</span>
           </h2>
           <p className="text-xl text-zinc-400 mb-10 max-w-2xl mx-auto">
-            The N+1 Alignment Dialogue Architecture is published under CC0 Public Domain.
+            The Alignment Dialogue Architecture is published under CC0 Public Domain.
             We believe foundational AI orchestration patterns should remain open.
           </p>
           <a

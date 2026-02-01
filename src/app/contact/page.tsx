@@ -34,8 +34,11 @@ export default function ContactPage() {
               </svg>
             </div>
             <h2 className="text-2xl font-bold mb-4">Email Us</h2>
-            <p className="text-zinc-400 mb-6">
-              Have a question, suggestion, or just want to say hi? Drop us a line.
+            <p className="text-zinc-400 mb-2">
+              Interested in Alignment Dialogue for your domain?
+            </p>
+            <p className="text-zinc-300 font-medium mb-6">
+              Contact us for a <span className="text-violet-400">proposal</span> tailored to your use case.
             </p>
             <a
               href="mailto:hello@superviber.com"

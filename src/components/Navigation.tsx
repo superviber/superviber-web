@@ -31,7 +31,7 @@ export default function Navigation() {
             alt="Superviber"
             width={120}
             height={28}
-            className="h-5 w-auto hidden sm:block"
+            className="h-8 w-auto hidden sm:block"
           />
         </Link>
         <div className="flex gap-8">
