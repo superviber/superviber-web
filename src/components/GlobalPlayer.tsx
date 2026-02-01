@@ -29,16 +29,19 @@ export function GlobalPlayer() {
   const [isAPIReady, setIsAPIReady] = useState(false);
   const currentVideoIdRef = useRef<string | null>(null);
   const hasInitializedRef = useRef(false);
+  const pendingAutoplayRef = useRef(false);
 
   // Use refs for callbacks to avoid recreating player when callbacks change
   const onEndRef = useRef(_onEnd);
   const setPlayerStateRef = useRef(_setPlayerState);
   const setHasPlayedOnceRef = useRef(_setHasPlayedOnce);
+  const playerRefLocal = useRef(_playerRef);
 
   // Keep refs in sync
   onEndRef.current = _onEnd;
   setPlayerStateRef.current = _setPlayerState;
   setHasPlayedOnceRef.current = _setHasPlayedOnce;
+  playerRefLocal.current = _playerRef;
 
   const isPlayerPage = pathname?.startsWith('/player');
 
@@ -108,6 +111,12 @@ export function GlobalPlayer() {
             case window.YT.PlayerState.CUED:
             case -1: // UNSTARTED
               setPlayerStateRef.current('READY');
+              // If we have a pending autoplay, trigger play now
+              if (pendingAutoplayRef.current) {
+                console.log('Video CUED/UNSTARTED with pending autoplay, calling playVideo');
+                pendingAutoplayRef.current = false;
+                playerRefLocal.current.current?.playVideo();
+              }
               break;
             case window.YT.PlayerState.BUFFERING:
               // Keep current state during buffering
@@ -143,13 +152,16 @@ export function GlobalPlayer() {
       cueVideoById: (videoId: string) => void;
     };
 
-    // loadVideoById auto-plays, cueVideoById just loads
+    // Set pending autoplay flag - we'll trigger play when video is CUED
+    // This is more reliable than loadVideoById's auto-play behavior
     if (_shouldAutoplay) {
-      player.loadVideoById(currentVideoId);
+      console.log('Setting pendingAutoplayRef for', currentVideoId);
+      pendingAutoplayRef.current = true;
       _setShouldAutoplay(false);
-    } else {
-      player.cueVideoById(currentVideoId);
     }
+
+    // Always use cueVideoById and let the CUED handler trigger play if needed
+    player.cueVideoById(currentVideoId);
   }, [currentVideoId, _shouldAutoplay, _playerRef, _setShouldAutoplay]);
 
   // Position the player wrapper to match the video target
