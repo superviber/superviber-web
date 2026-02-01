@@ -124,6 +124,9 @@ export function PlayerProvider({ children }: PlayerProviderProps) {
       if (saved && newPlaylist.songs.some((s) => s.videoId === saved.videoId)) {
         setCurrentVideoId(saved.videoId);
         pendingSeekRef.current = saved.time;
+      } else {
+        // Default to first song (cued, not autoplaying)
+        setCurrentVideoId(newPlaylist.songs[0].videoId);
       }
     }
   }, [currentVideoId]);
