@@ -28,6 +28,16 @@ export function GlobalPlayer() {
   const currentVideoIdRef = useRef<string | null>(null);
   const hasInitializedRef = useRef(false);
 
+  // Use refs for callbacks to avoid recreating player when callbacks change
+  const onEndRef = useRef(_onEnd);
+  const setPlayerStateRef = useRef(_setPlayerState);
+  const setHasPlayedOnceRef = useRef(_setHasPlayedOnce);
+
+  // Keep refs in sync
+  onEndRef.current = _onEnd;
+  setPlayerStateRef.current = _setPlayerState;
+  setHasPlayedOnceRef.current = _setHasPlayedOnce;
+
   const isPlayerPage = pathname?.startsWith('/player');
 
   // Load YouTube IFrame API
@@ -77,30 +87,30 @@ export function GlobalPlayer() {
       } as YT.PlayerVars,
       events: {
         onReady: () => {
-          _setPlayerState('READY');
+          setPlayerStateRef.current('READY');
         },
         onStateChange: (event) => {
           switch (event.data) {
             case window.YT.PlayerState.PLAYING:
-              _setPlayerState('PLAYING');
-              _setHasPlayedOnce(true);
+              setPlayerStateRef.current('PLAYING');
+              setHasPlayedOnceRef.current(true);
               break;
             case window.YT.PlayerState.PAUSED:
-              _setPlayerState('PAUSED');
+              setPlayerStateRef.current('PAUSED');
               break;
             case window.YT.PlayerState.ENDED:
-              _setPlayerState('ENDED');
-              _onEnd();
+              setPlayerStateRef.current('ENDED');
+              onEndRef.current();
               break;
             case window.YT.PlayerState.CUED:
             case -1: // UNSTARTED
-              _setPlayerState('READY');
+              setPlayerStateRef.current('READY');
               break;
             case window.YT.PlayerState.BUFFERING:
               // Keep current state during buffering
               break;
             default:
-              _setPlayerState('LOADING');
+              setPlayerStateRef.current('LOADING');
           }
         },
       },
@@ -115,21 +125,21 @@ export function GlobalPlayer() {
         hasInitializedRef.current = false;
       }
     };
-  }, [isAPIReady, currentVideoId, _setPlayerState, _setHasPlayedOnce, _playerRef, _onEnd]);
+  }, [isAPIReady, currentVideoId, _playerRef]); // Removed callback dependencies
 
   // Handle video ID changes
   useEffect(() => {
     if (!_playerRef.current || !currentVideoId) return;
     if (currentVideoIdRef.current === currentVideoId) return;
 
-    _setPlayerState('LOADING');
+    setPlayerStateRef.current('LOADING');
     currentVideoIdRef.current = currentVideoId;
 
     const player = _playerRef.current as YT.Player & {
       loadVideoById: (videoId: string) => void;
     };
     player.loadVideoById(currentVideoId);
-  }, [currentVideoId, _setPlayerState, _playerRef]);
+  }, [currentVideoId, _playerRef]);
 
   // Position the player wrapper to match the video target
   useEffect(() => {
