@@ -27,7 +27,7 @@ export function MiniPlayer() {
 
   // Don't show on player page or if no active player
   const isPlayerPage = pathname?.startsWith('/player');
-  const shouldShow = hasActivePlayer && !isPlayerPage && playerState !== 'LOADING';
+  const shouldShow = hasActivePlayer && !isPlayerPage;
 
   // Update time display
   useEffect(() => {
