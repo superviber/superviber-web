@@ -193,10 +193,9 @@ export function PlayerControls({
             <SkipBack className="w-5 h-5" />
           </button>
 
-          <div className="relative group">
-            <button
+          <button
               onClick={isPlaying ? onPause : onPlay}
-              disabled={!isReady || (!hasPlayedOnce && !isPlaying)}
+              disabled={!isReady}
               className="p-3 bg-white text-black rounded-full hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
               aria-label={isPlaying ? 'Pause' : 'Play'}
             >
@@ -206,13 +205,6 @@ export function PlayerControls({
                 <Play className="w-5 h-5 ml-0.5" />
               )}
             </button>
-            {!hasPlayedOnce && !isPlaying && (
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                Click the video to start
-                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-zinc-800" />
-              </div>
-            )}
-          </div>
 
           <button
             onClick={onNext}

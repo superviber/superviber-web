@@ -167,8 +167,14 @@ export function useYouTubePlayer({
   }, []);
 
   const play = useCallback(() => {
-    playerRef.current?.playVideo();
-  }, []);
+    if (!playerRef.current) return;
+    // Hack: seekTo triggers playback even before user interaction
+    if (!hasPlayedOnce) {
+      playerRef.current.seekTo(0.1, true);
+    } else {
+      playerRef.current.playVideo();
+    }
+  }, [hasPlayedOnce]);
 
   const pause = useCallback(() => {
     playerRef.current?.pauseVideo();
