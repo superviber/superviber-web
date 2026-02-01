@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { usePathname } from 'next/navigation';
 import { usePlayer } from '@/contexts/PlayerContext';
 
 declare global {
@@ -12,6 +12,7 @@ declare global {
 }
 
 export function GlobalPlayer() {
+  const pathname = usePathname();
   const {
     currentVideoId,
     videoTarget,
@@ -22,9 +23,12 @@ export function GlobalPlayer() {
   } = usePlayer();
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [isAPIReady, setIsAPIReady] = useState(false);
   const currentVideoIdRef = useRef<string | null>(null);
   const hasInitializedRef = useRef(false);
+
+  const isPlayerPage = pathname?.startsWith('/player');
 
   // Load YouTube IFrame API
   useEffect(() => {
@@ -127,27 +131,65 @@ export function GlobalPlayer() {
     player.loadVideoById(currentVideoId);
   }, [currentVideoId, _setPlayerState, _playerRef]);
 
+  // Position the player wrapper to match the video target
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+
+    const updatePosition = () => {
+      if (!wrapperRef.current) return;
+
+      if (isPlayerPage && videoTarget) {
+        const rect = videoTarget.getBoundingClientRect();
+        wrapperRef.current.style.position = 'fixed';
+        wrapperRef.current.style.top = `${rect.top}px`;
+        wrapperRef.current.style.left = `${rect.left}px`;
+        wrapperRef.current.style.width = `${rect.width}px`;
+        wrapperRef.current.style.height = `${rect.height}px`;
+        wrapperRef.current.style.zIndex = '10';
+        wrapperRef.current.style.pointerEvents = 'auto';
+      } else {
+        // Hidden but still playing
+        wrapperRef.current.style.position = 'fixed';
+        wrapperRef.current.style.top = '-9999px';
+        wrapperRef.current.style.left = '-9999px';
+        wrapperRef.current.style.width = '640px';
+        wrapperRef.current.style.height = '360px';
+        wrapperRef.current.style.zIndex = '-1';
+        wrapperRef.current.style.pointerEvents = 'none';
+      }
+    };
+
+    updatePosition();
+
+    // Update on scroll/resize when on player page
+    if (isPlayerPage && videoTarget) {
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
+
+      // Use ResizeObserver to track target size changes
+      const resizeObserver = new ResizeObserver(updatePosition);
+      resizeObserver.observe(videoTarget);
+
+      return () => {
+        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener('resize', updatePosition);
+        resizeObserver.disconnect();
+      };
+    }
+  }, [isPlayerPage, videoTarget]);
+
   // Don't render anything if no video selected
   if (!currentVideoId) return null;
 
-  const iframeContainer = (
-    <div
-      ref={containerRef}
-      className="absolute inset-0 [&>iframe]:absolute [&>iframe]:inset-0 [&>iframe]:!w-full [&>iframe]:!h-full"
-    />
-  );
-
-  // Portal to video target if available, otherwise render hidden
-  if (videoTarget) {
-    return createPortal(iframeContainer, videoTarget);
-  }
-
-  // Hidden container when not on player page (keeps playing)
   return (
-    <div className="fixed -top-[9999px] -left-[9999px] w-[640px] h-[360px] pointer-events-none">
-      <div className="relative w-full h-full">
-        {iframeContainer}
-      </div>
+    <div
+      ref={wrapperRef}
+      className="fixed -top-[9999px] -left-[9999px] w-[640px] h-[360px] pointer-events-none"
+    >
+      <div
+        ref={containerRef}
+        className="absolute inset-0 [&>iframe]:absolute [&>iframe]:inset-0 [&>iframe]:!w-full [&>iframe]:!h-full"
+      />
     </div>
   );
 }
