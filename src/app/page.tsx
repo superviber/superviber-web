@@ -166,7 +166,7 @@ export default function Home() {
             href="/contact"
             className="inline-flex px-10 py-5 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-full hover:from-violet-500 hover:to-fuchsia-500 transition-all text-lg glow"
           >
-            Talk to Us
+            Get in Touch
           </Link>
         </div>
       </section>
