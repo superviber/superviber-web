@@ -146,12 +146,8 @@ export function PlayerProvider({ children }: PlayerProviderProps) {
   // Controls
   const play = useCallback(() => {
     if (!playerRef.current) return;
-    if (!hasPlayedOnce) {
-      playerRef.current.seekTo(0.1, true);
-    } else {
-      playerRef.current.playVideo();
-    }
-  }, [hasPlayedOnce]);
+    playerRef.current.playVideo();
+  }, []);
 
   const pause = useCallback(() => {
     playerRef.current?.pauseVideo();
