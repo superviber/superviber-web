@@ -86,8 +86,8 @@ export function LyricsPanel({
       {/* Lyrics container - overflow-anchor:none prevents browser scroll anchoring */}
       <div
         ref={containerRefCallback}
-        className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-4 min-h-[200px]"
-        style={{ overflowAnchor: 'none' }}
+        className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-4 min-h-[200px] max-w-full"
+        style={{ overflowAnchor: 'none', wordWrap: 'break-word' }}
       >
 
         {lines.map((line, index) => {
@@ -106,6 +106,7 @@ export function LyricsPanel({
                 py-3 lg:py-4 px-[12%] lg:px-4
                 transition-[transform,color,opacity,text-shadow] duration-300 ease-out
                 text-center lg:text-left origin-center lg:origin-left
+                break-words
                 ${isCurrent ? 'lyric-current' : ''}
                 ${isAdjacent && !isCurrent ? 'lyric-adjacent' : ''}
                 ${isFar && !isCurrent ? 'lyric-distant' : ''}
