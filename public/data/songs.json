@@ -38,6 +38,12 @@
       "hasLyrics": true
     },
     {
+      "videoId": "CmBgxP56R1I",
+      "title": "Furr",
+      "artist": "Blitzen Trapper",
+      "hasLyrics": true
+    },
+    {
       "videoId": "ispGw346zeQ",
       "title": "Generator ^ First Floor",
       "artist": "Freelance Whales",
@@ -71,6 +77,12 @@
       "videoId": "sDNy9q62jCc",
       "title": "Life Crisis",
       "artist": "River Whyless",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "51Xc1wOJRn4",
+      "title": "Animal (Miike Snow Cover)",
+      "artist": "Javier Dunn",
       "hasLyrics": true
     },
     {
@@ -176,6 +188,18 @@
       "hasLyrics": true
     },
     {
+      "videoId": "37DIzz5Q2bM",
+      "title": "Skinny Love (Vanic Remix)",
+      "artist": "Birdy",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "cSPfeTwl8Kw",
+      "title": "Medicine (Sound Remedy Remix)",
+      "artist": "Daughter",
+      "hasLyrics": true
+    },
+    {
       "videoId": "Ii-HvEWyC-U",
       "title": "Optimism",
       "artist": "ANIMA!",
@@ -185,6 +209,12 @@
       "videoId": "WrBAdzACig0",
       "title": "Homecoming",
       "artist": "Josh Ritter",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "J2IbTD4ecJA",
+      "title": "This Must Be The Place (Naive Melody)",
+      "artist": "LAUREL",
       "hasLyrics": true
     },
     {
@@ -236,6 +266,12 @@
       "hasLyrics": true
     },
     {
+      "videoId": "8tOnZQHjK0U",
+      "title": "Moving Mountains",
+      "artist": "ANIMA!",
+      "hasLyrics": true
+    },
+    {
       "videoId": "di_MwYDLTH0",
       "title": "No Mind, Never Matter",
       "artist": "ANIMA!",
@@ -266,6 +302,18 @@
       "hasLyrics": true
     },
     {
+      "videoId": "CeQhjDoy3l0",
+      "title": "The John Wayne",
+      "artist": "Little Green Cars",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "ssFgYNn0BUA",
+      "title": "Groceries",
+      "artist": "Mallrat",
+      "hasLyrics": true
+    },
+    {
       "videoId": "BSegx1n7RR0",
       "title": "Beige",
       "artist": "Yoke Lore",
@@ -290,9 +338,27 @@
       "hasLyrics": true
     },
     {
+      "videoId": "aHzlSuYrzeU",
+      "title": "Paper Planes [MIA]",
+      "artist": "Beautiful Small Machines",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "F8xS1FqQzjQ",
+      "title": "Chasing Shadows",
+      "artist": "Santigold",
+      "hasLyrics": true
+    },
+    {
       "videoId": "mmhZ1JmTwLs",
       "title": "Watch It Grow",
       "artist": "KR3TURE",
+      "hasLyrics": true
+    },
+    {
+      "videoId": "RPxZLAcZ9TE",
+      "title": "00000 Million (A Cappella)",
+      "artist": "Gordi",
       "hasLyrics": true
     }
   ]
