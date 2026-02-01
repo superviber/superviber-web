@@ -209,9 +209,8 @@ export function GlobalPlayer() {
     }
   }, [isPlayerPage, videoTarget]);
 
-  // Don't render anything if no video selected
-  if (!currentVideoId) return null;
-
+  // Always render the container so the player can initialize
+  // The wrapper is positioned off-screen when not on player page
   return (
     <div
       ref={wrapperRef}
