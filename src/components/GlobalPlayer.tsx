@@ -19,7 +19,8 @@ export function GlobalPlayer() {
     _setPlayerState,
     _setHasPlayedOnce,
     _playerRef,
-    _shouldAutoplayRef,
+    _shouldAutoplay,
+    _setShouldAutoplay,
     _onEnd,
   } = usePlayer();
 
@@ -100,6 +101,7 @@ export function GlobalPlayer() {
               setPlayerStateRef.current('PAUSED');
               break;
             case window.YT.PlayerState.ENDED:
+              console.log('Song ENDED, calling onEnd');
               setPlayerStateRef.current('ENDED');
               onEndRef.current();
               break;
@@ -133,8 +135,8 @@ export function GlobalPlayer() {
     if (!_playerRef.current || !currentVideoId) return;
     if (currentVideoIdRef.current === currentVideoId) return;
 
-    setPlayerStateRef.current('LOADING');
     currentVideoIdRef.current = currentVideoId;
+    setPlayerStateRef.current('LOADING');
 
     const player = _playerRef.current as YT.Player & {
       loadVideoById: (videoId: string) => void;
@@ -142,12 +144,13 @@ export function GlobalPlayer() {
     };
 
     // loadVideoById auto-plays, cueVideoById just loads
-    if (_shouldAutoplayRef.current) {
+    if (_shouldAutoplay) {
       player.loadVideoById(currentVideoId);
+      _setShouldAutoplay(false);
     } else {
       player.cueVideoById(currentVideoId);
     }
-  }, [currentVideoId, _playerRef, _shouldAutoplayRef]);
+  }, [currentVideoId, _shouldAutoplay, _playerRef, _setShouldAutoplay]);
 
   // Position the player wrapper to match the video target
   useEffect(() => {

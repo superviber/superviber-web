@@ -52,7 +52,8 @@ interface PlayerContextValue {
   _setPlayerState: (state: PlayerState) => void;
   _setHasPlayedOnce: (value: boolean) => void;
   _playerRef: React.MutableRefObject<YT.Player | null>;
-  _shouldAutoplayRef: React.MutableRefObject<boolean>;
+  _shouldAutoplay: boolean;
+  _setShouldAutoplay: (value: boolean) => void;
   _onEnd: () => void;
 }
 
@@ -160,12 +161,12 @@ export function PlayerProvider({ children }: PlayerProviderProps) {
     playerRef.current?.seekTo(seconds, true);
   }, []);
 
-  // Track whether next song should autoplay
-  const shouldAutoplayRef = useRef(false);
+  // Track whether next song should autoplay (use state for proper batching)
+  const [shouldAutoplay, setShouldAutoplay] = useState(false);
 
   const selectSong = useCallback((videoId: string, autoplay = true) => {
     if (videoId === currentVideoId) return;
-    shouldAutoplayRef.current = autoplay;
+    setShouldAutoplay(autoplay);
     setCurrentVideoId(videoId);
     setHasPlayedOnce(false);
   }, [currentVideoId]);
@@ -282,7 +283,8 @@ export function PlayerProvider({ children }: PlayerProviderProps) {
     _setPlayerState: setPlayerState,
     _setHasPlayedOnce: setHasPlayedOnce,
     _playerRef: playerRef,
-    _shouldAutoplayRef: shouldAutoplayRef,
+    _shouldAutoplay: shouldAutoplay,
+    _setShouldAutoplay: setShouldAutoplay,
     _onEnd,
   };
 
