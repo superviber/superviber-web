@@ -169,6 +169,7 @@ export function PlayerProvider({ children }: PlayerProviderProps) {
   const selectSong = useCallback((videoId: string, autoplay = true) => {
     if (videoId === currentVideoId) return;
     shouldAutoplayRef.current = autoplay;  // Ref updates synchronously
+    pendingSeekRef.current = null;  // Clear any pending seek - new song starts from beginning
     setCurrentVideoId(videoId);
     setHasPlayedOnce(false);
   }, [currentVideoId]);
