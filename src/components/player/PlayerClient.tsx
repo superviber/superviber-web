@@ -235,7 +235,7 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
   }, [currentVideoId, currentSong?.hasLyrics]);
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col bg-black">
+    <div className="h-[calc(100dvh-4rem)] flex flex-col bg-black">
       {/* Main content area */}
       <div
         className="flex-1 flex flex-col lg:flex-row min-h-0"
