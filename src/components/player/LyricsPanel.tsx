@@ -103,7 +103,7 @@ export function LyricsPanel({
                 lineRefs.current[index] = el;
               }}
               className={`
-                py-3 lg:py-4 px-[12%] lg:px-4 lg:pr-[20%]
+                py-3 lg:py-4 px-[15%] lg:pl-4 lg:pr-[20%]
                 transition-[transform,color,opacity,text-shadow] duration-300 ease-out
                 text-center lg:text-left origin-center lg:origin-left
                 break-words
