@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { VideoPlayer } from './VideoPlayer';
 import { LyricsPanel } from './LyricsPanel';
 import { PlayerControls } from './PlayerControls';
+import { PlaylistSidebar } from './PlaylistSidebar';
 import { useYouTubePlayer } from '@/hooks/useYouTubePlayer';
 import { useLyricSync } from '@/hooks/useLyricSync';
 import { parseLRC, type ParsedLRC } from '@/lib/lrc-parser';
@@ -62,6 +63,7 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
   const [pendingSeek, setPendingSeek] = useState<number | null>(
     shouldRestore && savedState.current!.time > 0 ? savedState.current!.time : null
   );
+  const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
   const saveIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Update URL if we restored from saved state
@@ -97,6 +99,14 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
     setCurrentVideoId(prevSong.videoId);
     window.history.pushState({}, '', `/player/${prevSong.videoId}`);
   }, [currentIndex, playlist.songs]);
+
+  // Select specific song from playlist
+  const selectSong = useCallback((videoId: string) => {
+    if (videoId === currentVideoId) return;
+    setShouldAutoplay(false);
+    setCurrentVideoId(videoId);
+    window.history.pushState({}, '', `/player/${videoId}`);
+  }, [currentVideoId]);
 
   // YouTube player
   const {
@@ -231,9 +241,9 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
         className="flex-1 flex flex-col lg:flex-row min-h-0"
         style={{ overflowAnchor: 'none' }}
       >
-        {/* Video + Controls section */}
+        {/* Video + Controls + Playlist section */}
         <div
-          className="flex-shrink-0 flex flex-col lg:self-start"
+          className="flex-shrink-0 flex flex-col lg:h-full"
           style={{ contain: 'layout' }}
         >
           {/* Video player */}
@@ -242,7 +252,7 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
           </div>
 
           {/* Player controls - below video */}
-          <div className="lg:px-6 lg:pb-6">
+          <div className="lg:px-6 lg:pb-0">
             <div className="lg:rounded-b-lg overflow-hidden">
               <PlayerControls
                 playerState={playerState}
@@ -259,10 +269,36 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
               />
             </div>
           </div>
+
+          {/* Desktop: Playlist below controls */}
+          <div className="hidden lg:flex lg:flex-col lg:flex-1 lg:min-h-0 lg:px-6 lg:pb-6">
+            <div className="lg:rounded-b-lg overflow-hidden flex flex-col flex-1 min-h-0">
+              <PlaylistSidebar
+                songs={playlist.songs}
+                currentVideoId={currentVideoId}
+                onSelectSong={selectSong}
+                isOpen={isPlaylistOpen}
+                onToggle={() => setIsPlaylistOpen(!isPlaylistOpen)}
+                onClose={() => setIsPlaylistOpen(false)}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Lyrics section */}
-        <div className="flex-1 flex flex-col min-h-0 overflow-hidden border-t lg:border-t-0 lg:border-l border-white/10">
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden border-t lg:border-t-0 lg:border-l border-white/10 relative">
+          {/* Mobile: Playlist sidebar overlay */}
+          <div className="lg:hidden">
+            <PlaylistSidebar
+              songs={playlist.songs}
+              currentVideoId={currentVideoId}
+              onSelectSong={selectSong}
+              isOpen={isPlaylistOpen}
+              onToggle={() => setIsPlaylistOpen(!isPlaylistOpen)}
+              onClose={() => setIsPlaylistOpen(false)}
+            />
+          </div>
+
           {isLoadingLyrics ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-zinc-500">Loading lyrics...</div>
