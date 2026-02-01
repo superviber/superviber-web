@@ -140,8 +140,21 @@ export function GlobalPlayer() {
 
   // Handle video ID changes
   useEffect(() => {
-    if (!_playerRef.current || !currentVideoId) return;
-    if (currentVideoIdRef.current === currentVideoId) return;
+    console.log('Video ID change effect:', {
+      hasPlayer: !!_playerRef.current,
+      currentVideoId,
+      prevVideoId: currentVideoIdRef.current,
+      shouldAutoplay: _shouldAutoplayRef.current,
+    });
+
+    if (!_playerRef.current || !currentVideoId) {
+      console.log('Early return: no player or no videoId');
+      return;
+    }
+    if (currentVideoIdRef.current === currentVideoId) {
+      console.log('Early return: same video ID');
+      return;
+    }
 
     currentVideoIdRef.current = currentVideoId;
     setPlayerStateRef.current('LOADING');
@@ -157,6 +170,8 @@ export function GlobalPlayer() {
       console.log('Setting pendingAutoplayRef for', currentVideoId);
       pendingAutoplayRef.current = true;
       _shouldAutoplayRef.current = false;  // Clear it
+    } else {
+      console.log('shouldAutoplayRef is false, not setting pending');
     }
 
     // Always use cueVideoById and let the CUED handler trigger play if needed
