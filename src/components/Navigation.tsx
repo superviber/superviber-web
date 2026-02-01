@@ -10,7 +10,7 @@ export default function Navigation() {
   const links = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
-    { href: '/player', label: 'Vibe' },
+    { href: '/player', label: '♪ Vibe' },
     { href: '/contact', label: 'Contact' },
   ];
 

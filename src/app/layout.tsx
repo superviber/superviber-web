@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Main from "@/components/Main";
+import { Providers } from "@/components/Providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,11 +32,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.variable} font-sans antialiased bg-black text-white`}>
-        <Navigation />
-        <Main>
-          {children}
-        </Main>
-        <Footer />
+        <Providers>
+          <Navigation />
+          <Main>
+            {children}
+          </Main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
