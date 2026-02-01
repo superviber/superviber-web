@@ -19,8 +19,7 @@ export function GlobalPlayer() {
     _setPlayerState,
     _setHasPlayedOnce,
     _playerRef,
-    _shouldAutoplay,
-    _setShouldAutoplay,
+    _shouldAutoplayRef,
     _onEnd,
   } = usePlayer();
 
@@ -152,17 +151,17 @@ export function GlobalPlayer() {
       cueVideoById: (videoId: string) => void;
     };
 
-    // Set pending autoplay flag - we'll trigger play when video is CUED
-    // This is more reliable than loadVideoById's auto-play behavior
-    if (_shouldAutoplay) {
+    // Check the autoplay ref synchronously - it was set before the videoId state update
+    // Using a ref avoids React batching race conditions
+    if (_shouldAutoplayRef.current) {
       console.log('Setting pendingAutoplayRef for', currentVideoId);
       pendingAutoplayRef.current = true;
-      _setShouldAutoplay(false);
+      _shouldAutoplayRef.current = false;  // Clear it
     }
 
     // Always use cueVideoById and let the CUED handler trigger play if needed
     player.cueVideoById(currentVideoId);
-  }, [currentVideoId, _shouldAutoplay, _playerRef, _setShouldAutoplay]);
+  }, [currentVideoId, _playerRef, _shouldAutoplayRef]);
 
   // Position the player wrapper to match the video target
   useEffect(() => {
