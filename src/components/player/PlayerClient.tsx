@@ -56,12 +56,15 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
     return () => setVideoTarget(null);
   }, [setVideoTarget]);
 
-  // Update URL when song changes
+  // Update URL and page title when song changes
   useEffect(() => {
     if (currentVideoId) {
       window.history.replaceState({}, '', `/player/${currentVideoId}`);
     }
-  }, [currentVideoId]);
+    if (currentSong) {
+      document.title = `${currentSong.title} - ${currentSong.artist} | SuperViber`;
+    }
+  }, [currentVideoId, currentSong]);
 
   // Lyrics sync
   const { currentLineIndex } = useLyricSync({
