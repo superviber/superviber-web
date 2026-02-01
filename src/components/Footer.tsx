@@ -1,7 +1,17 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Hide footer on player page
+  if (pathname?.startsWith('/player')) {
+    return null;
+  }
+
   return (
     <footer className="border-t border-white/10 bg-black">
       <div className="max-w-6xl mx-auto px-6 py-12">
