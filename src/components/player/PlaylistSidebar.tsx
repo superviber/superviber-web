@@ -68,7 +68,7 @@ export function PlaylistSidebar({
         className="lg:hidden absolute left-0 top-1/2 -translate-y-1/2 z-20
                    bg-purple-600 hover:bg-purple-500 transition-colors
                    rounded-r-lg shadow-lg shadow-purple-900/50
-                   flex items-center justify-center w-8 h-20"
+                   flex items-center justify-center w-8 h-20 pointer-events-auto"
         aria-label="Open playlist"
       >
         <List className="w-5 h-5 text-white" />
@@ -81,7 +81,7 @@ export function PlaylistSidebar({
           lg:hidden absolute left-0 top-0 bottom-0 z-30
           bg-zinc-900/95 backdrop-blur-sm border-r border-purple-500/30
           transition-transform duration-300 ease-out
-          w-[80%] max-w-sm flex flex-col
+          w-[80%] max-w-sm flex flex-col pointer-events-auto
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >

@@ -235,7 +235,7 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
   }, [currentVideoId, currentSong?.hasLyrics]);
 
   return (
-    <div className="h-[calc(100dvh-4rem)] flex flex-col bg-black">
+    <div className="h-full flex flex-col bg-black overflow-hidden">
       {/* Main content area */}
       <div
         className="flex-1 flex flex-col lg:flex-row min-h-0"
@@ -288,7 +288,7 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
         {/* Lyrics section */}
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden border-t lg:border-t-0 lg:border-l border-white/10 relative">
           {/* Mobile: Playlist sidebar overlay */}
-          <div className="lg:hidden">
+          <div className="lg:hidden absolute inset-0 z-20 pointer-events-none">
             <PlaylistSidebar
               songs={playlist.songs}
               currentVideoId={currentVideoId}
