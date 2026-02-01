@@ -57,7 +57,7 @@ export default function Home() {
               href="/player"
               className="px-8 py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-full hover:from-violet-500 hover:to-fuchsia-500 transition-all text-lg"
             >
-              Vibe
+              Vibe with Us
             </Link>
           </div>
         </div>
@@ -85,7 +85,7 @@ export default function Home() {
           {/* Mini architecture visual */}
           <div className="max-w-xl mx-auto">
             <div className="flex flex-col items-center">
-              <div className="w-32 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-center text-sm font-semibold mb-6">
+              <div className="w-32 py-3 rounded-xl bg-zinc-800 border-2 border-violet-500 text-center text-sm font-semibold mb-6 text-violet-300">
                 Judge
               </div>
               <div className="grid grid-cols-4 gap-3 w-full">
