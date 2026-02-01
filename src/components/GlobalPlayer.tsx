@@ -19,6 +19,7 @@ export function GlobalPlayer() {
     _setPlayerState,
     _setHasPlayedOnce,
     _playerRef,
+    _shouldAutoplayRef,
     _onEnd,
   } = usePlayer();
 
@@ -137,9 +138,16 @@ export function GlobalPlayer() {
 
     const player = _playerRef.current as YT.Player & {
       loadVideoById: (videoId: string) => void;
+      cueVideoById: (videoId: string) => void;
     };
-    player.loadVideoById(currentVideoId);
-  }, [currentVideoId, _playerRef]);
+
+    // loadVideoById auto-plays, cueVideoById just loads
+    if (_shouldAutoplayRef.current) {
+      player.loadVideoById(currentVideoId);
+    } else {
+      player.cueVideoById(currentVideoId);
+    }
+  }, [currentVideoId, _playerRef, _shouldAutoplayRef]);
 
   // Position the player wrapper to match the video target
   useEffect(() => {
