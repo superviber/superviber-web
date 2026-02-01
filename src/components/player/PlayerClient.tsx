@@ -7,16 +7,14 @@ import { PlaylistSidebar } from './PlaylistSidebar';
 import { usePlayer } from '@/contexts/PlayerContext';
 import { useLyricSync } from '@/hooks/useLyricSync';
 import { parseLRC, type ParsedLRC } from '@/lib/lrc-parser';
-import type { Playlist } from '@/lib/types';
 
 interface PlayerClientProps {
-  playlist: Playlist;
   initialVideoId: string;
 }
 
-export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
+export function PlayerClient({ initialVideoId }: PlayerClientProps) {
   const {
-    setPlaylist,
+    playlist,
     currentVideoId,
     selectSong,
     currentSong,
@@ -38,25 +36,24 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
 
   const videoContainerRef = useRef<HTMLDivElement>(null);
 
-  // Initialize playlist and video on mount
+  // Select video from URL if different from current (and playlist is loaded)
   useEffect(() => {
-    setPlaylist(playlist);
-  }, [playlist, setPlaylist]);
+    if (!playlist || !initialVideoId) return;
+    if (currentVideoId === initialVideoId) return;
 
-  // Select initial video if none selected
-  useEffect(() => {
-    if (!currentVideoId && initialVideoId) {
+    // Only auto-select if no song is currently playing
+    if (!currentVideoId) {
       selectSong(initialVideoId, false);
     }
-  }, [currentVideoId, initialVideoId, selectSong]);
+  }, [playlist, initialVideoId, currentVideoId, selectSong]);
 
-  // Register video container as portal target
+  // Register video container as target for GlobalPlayer
   useEffect(() => {
     setVideoTarget(videoContainerRef.current);
     return () => setVideoTarget(null);
   }, [setVideoTarget]);
 
-  // Update URL and page title when song changes
+  // Update URL when song changes
   useEffect(() => {
     if (currentVideoId) {
       window.history.replaceState({}, '', `/player/${currentVideoId}`);
@@ -104,6 +101,15 @@ export function PlayerClient({ playlist, initialVideoId }: PlayerClientProps) {
   const handleSelectSong = useCallback((videoId: string) => {
     selectSong(videoId, true);
   }, [selectSong]);
+
+  // Show loading state while playlist loads
+  if (!playlist) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="text-zinc-500">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col bg-black overflow-hidden">
