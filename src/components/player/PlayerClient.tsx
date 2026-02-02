@@ -34,7 +34,13 @@ export function PlayerClient({ initialVideoId }: PlayerClientProps) {
   const [isLoadingLyrics, setIsLoadingLyrics] = useState(true);
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
 
-  const videoContainerRef = useRef<HTMLDivElement>(null);
+  // Use callback ref to register video container when DOM node is available
+  const videoContainerRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      setVideoTarget(node);
+    },
+    [setVideoTarget]
+  );
 
   // Select video from URL if different from current (and playlist is loaded)
   useEffect(() => {
@@ -46,12 +52,6 @@ export function PlayerClient({ initialVideoId }: PlayerClientProps) {
       selectSong(initialVideoId, false);
     }
   }, [playlist, initialVideoId, currentVideoId, selectSong]);
-
-  // Register video container as target for GlobalPlayer
-  useEffect(() => {
-    setVideoTarget(videoContainerRef.current);
-    return () => setVideoTarget(null);
-  }, [setVideoTarget]);
 
   // Update URL when song changes
   useEffect(() => {
