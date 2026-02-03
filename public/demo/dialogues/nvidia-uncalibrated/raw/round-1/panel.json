@@ -1,0 +1,109 @@
+{
+  "agents": [
+    {
+      "emoji": "🧁",
+      "name": "Muffin",
+      "relevance": 0.95,
+      "role": "Value Analyst",
+      "tier": "Core"
+    },
+    {
+      "emoji": "🧁",
+      "name": "Cupcake",
+      "relevance": 0.92,
+      "role": "Growth Analyst",
+      "tier": "Core"
+    },
+    {
+      "emoji": "🧁",
+      "name": "Scone",
+      "relevance": 0.9,
+      "role": "Risk Manager",
+      "tier": "Core"
+    },
+    {
+      "emoji": "🧁",
+      "name": "Eclair",
+      "relevance": 0.88,
+      "role": "Portfolio Strategist",
+      "tier": "Core"
+    },
+    {
+      "emoji": "🧁",
+      "name": "Donut",
+      "relevance": 0.82,
+      "role": "Semiconductor Analyst",
+      "tier": "Adjacent"
+    },
+    {
+      "emoji": "🧁",
+      "name": "Brioche",
+      "relevance": 0.8,
+      "role": "AI/ML Industry Expert",
+      "tier": "Adjacent"
+    },
+    {
+      "emoji": "🧁",
+      "name": "Croissant",
+      "relevance": 0.4,
+      "role": "Behavioral Finance Expert",
+      "tier": "Wildcard"
+    },
+    {
+      "emoji": "🧁",
+      "name": "Macaron",
+      "relevance": 0.35,
+      "role": "Contrarian",
+      "tier": "Wildcard"
+    }
+  ],
+  "history": {
+    "created_count": 0,
+    "experts": [
+      {
+        "name": "Muffin",
+        "role": "Value Analyst",
+        "source": "retained"
+      },
+      {
+        "name": "Cupcake",
+        "role": "Growth Analyst",
+        "source": "retained"
+      },
+      {
+        "name": "Scone",
+        "role": "Risk Manager",
+        "source": "retained"
+      },
+      {
+        "name": "Eclair",
+        "role": "Portfolio Strategist",
+        "source": "retained"
+      },
+      {
+        "name": "Donut",
+        "role": "Semiconductor Analyst",
+        "source": "retained"
+      },
+      {
+        "name": "Brioche",
+        "role": "AI/ML Industry Expert",
+        "source": "retained"
+      },
+      {
+        "name": "Croissant",
+        "role": "Behavioral Finance Expert",
+        "source": "retained"
+      },
+      {
+        "name": "Macaron",
+        "role": "Contrarian",
+        "source": "retained"
+      }
+    ],
+    "from_pool_count": 0,
+    "panel_size": 8,
+    "retained_count": 8,
+    "round": 1
+  }
+}
