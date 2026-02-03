@@ -1,0 +1,66 @@
+{
+  "domain": "Investment Analysis",
+  "question": "Should Acme Investment Trust add NVIDIA (NVDA) by trimming the existing NVAI position?",
+  "experts": [
+    {
+      "role": "Value Analyst",
+      "tier": "core",
+      "relevance": 0.95
+    },
+    {
+      "role": "Growth Analyst",
+      "tier": "core",
+      "relevance": 0.92
+    },
+    {
+      "role": "Risk Manager",
+      "tier": "core",
+      "relevance": 0.9
+    },
+    {
+      "role": "Portfolio Strategist",
+      "tier": "core",
+      "relevance": 0.88
+    },
+    {
+      "role": "Semiconductor Analyst",
+      "tier": "adjacent",
+      "relevance": 0.82
+    },
+    {
+      "role": "AI/ML Industry Expert",
+      "tier": "adjacent",
+      "relevance": 0.8
+    },
+    {
+      "role": "ESG Analyst",
+      "tier": "adjacent",
+      "relevance": 0.65
+    },
+    {
+      "role": "Technical Analyst",
+      "tier": "adjacent",
+      "relevance": 0.6
+    },
+    {
+      "role": "Quant Strategist",
+      "tier": "adjacent",
+      "relevance": 0.58
+    },
+    {
+      "role": "Geopolitical Analyst",
+      "tier": "wildcard",
+      "relevance": 0.45
+    },
+    {
+      "role": "Behavioral Finance Expert",
+      "tier": "wildcard",
+      "relevance": 0.4
+    },
+    {
+      "role": "Contrarian",
+      "tier": "wildcard",
+      "relevance": 0.35
+    }
+  ]
+}
