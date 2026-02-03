@@ -314,18 +314,6 @@ export default function AboutPage() {
                 <div className="text-[10px] text-zinc-500 mt-1">rounds continue until convergence</div>
               </div>
 
-              {/* See Demo CTA */}
-              <Link
-                href="/demo/alignment"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-violet-500/20 border border-violet-500/30 rounded-full hover:bg-violet-500/30 transition-colors text-sm text-violet-300"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                See a real dialogue in action
-              </Link>
-
               {/* Final Synthesis - Convergence */}
               <div className="py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-950/50 to-cyan-950/50 border border-emerald-500/30 text-center max-w-md">
                 <div className="text-[10px] uppercase tracking-wider text-emerald-400 mb-1">Convergence Detected</div>
@@ -346,6 +334,21 @@ export default function AboutPage() {
                 <div className="mt-2 text-xs text-zinc-400">Velocity → 0 • Consensus achieved</div>
               </div>
             </div>
+          </div>
+
+          {/* See Demo CTA */}
+          <div className="text-center">
+            <Link
+              href="/demo/alignment"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-full hover:from-violet-500 hover:to-fuchsia-500 transition-all shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              See a Real Dialogue in Action
+            </Link>
+            <p className="mt-3 text-sm text-zinc-500">Watch 8 experts converge on an investment decision</p>
           </div>
 
         </div>
