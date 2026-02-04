@@ -515,7 +515,9 @@ export function LyricsEditor() {
                   : 'hover:bg-zinc-800/50'
               }`}
             >
-              <div className="text-sm truncate">{song.title}</div>
+              <div className={`text-sm truncate ${!song.hasLyrics ? 'text-orange-400' : ''}`}>
+                {song.title}
+              </div>
               <div className="text-xs text-zinc-500 truncate flex items-center gap-2">
                 {song.artist}
                 {song.hasLyrics && <span className="text-green-400">✓</span>}
