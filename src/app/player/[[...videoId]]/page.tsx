@@ -18,13 +18,41 @@ export async function generateMetadata({
   const targetVideoId = videoId?.[0] || playlist.songs[0]?.videoId;
   const song = playlist.songs.find((s) => s.videoId === targetVideoId);
 
+  const title = song
+    ? `${song.title} - ${song.artist}`
+    : 'Player | SuperViber';
+  const description = song
+    ? `Listen to ${song.title} by ${song.artist} with synchronized lyrics`
+    : 'Listen to music with synchronized lyrics';
+
+  // YouTube thumbnail URL
+  const imageUrl = targetVideoId
+    ? `https://img.youtube.com/vi/${targetVideoId}/hqdefault.jpg`
+    : 'https://superviber.com/images/sv-icon.png';
+
   return {
-    title: song
-      ? `${song.title} - ${song.artist} | SuperViber`
-      : 'Player | SuperViber',
-    description: song
-      ? `Listen to ${song.title} by ${song.artist} with synchronized lyrics`
-      : 'Listen to music with synchronized lyrics',
+    title: song ? `${title} | SuperViber` : title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'music.song',
+      siteName: 'SuperViber',
+      images: [
+        {
+          url: imageUrl,
+          width: 480,
+          height: 360,
+          alt: song ? `${song.title} by ${song.artist}` : 'SuperViber',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
   };
 }
 
