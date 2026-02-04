@@ -42,14 +42,19 @@ export function PlayerClient({ initialVideoId }: PlayerClientProps) {
     [setVideoTarget]
   );
 
-  // Select video from URL if different from current (and playlist is loaded)
+  // Track if this is initial mount - URL should take precedence over localStorage
+  const isInitialMountRef = useRef(true);
+
+  // Select video from URL on initial mount (takes precedence over localStorage)
   useEffect(() => {
     if (!playlist || !initialVideoId) return;
-    if (currentVideoId === initialVideoId) return;
 
-    // Only auto-select if no song is currently playing
-    if (!currentVideoId) {
-      selectSong(initialVideoId, false);
+    // On initial mount, always select the URL's video
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false;
+      if (currentVideoId !== initialVideoId) {
+        selectSong(initialVideoId, false);
+      }
     }
   }, [playlist, initialVideoId, currentVideoId, selectSong]);
 
