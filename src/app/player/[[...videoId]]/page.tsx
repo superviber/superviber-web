@@ -71,5 +71,8 @@ export default async function PlayerPage({
   const songExists = playlist.songs.some((s) => s.videoId === targetVideoId);
   const initialVideoId = songExists ? targetVideoId : playlist.songs[0]?.videoId || '';
 
-  return <PlayerClient initialVideoId={initialVideoId} />;
+  // Track if videoId was explicitly provided in URL (not defaulted)
+  const isExplicitVideoId = !!videoId?.[0] && songExists;
+
+  return <PlayerClient initialVideoId={initialVideoId} isExplicitVideoId={isExplicitVideoId} />;
 }

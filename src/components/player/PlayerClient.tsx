@@ -10,9 +10,10 @@ import { parseLRC, type ParsedLRC } from '@/lib/lrc-parser';
 
 interface PlayerClientProps {
   initialVideoId: string;
+  isExplicitVideoId: boolean;
 }
 
-export function PlayerClient({ initialVideoId }: PlayerClientProps) {
+export function PlayerClient({ initialVideoId, isExplicitVideoId }: PlayerClientProps) {
   const {
     playlist,
     currentVideoId,
@@ -45,18 +46,21 @@ export function PlayerClient({ initialVideoId }: PlayerClientProps) {
   // Track if this is initial mount - URL should take precedence over localStorage
   const isInitialMountRef = useRef(true);
 
-  // Select video from URL on initial mount (takes precedence over localStorage)
+  // Select video from URL on initial mount
   useEffect(() => {
     if (!playlist || !initialVideoId) return;
 
-    // On initial mount, always select the URL's video
     if (isInitialMountRef.current) {
       isInitialMountRef.current = false;
-      if (currentVideoId !== initialVideoId) {
+      // Only select the URL's video if:
+      // 1. The URL explicitly specified a videoId, OR
+      // 2. There's no current video yet (truly initial state)
+      const shouldSelectFromUrl = isExplicitVideoId || !currentVideoId;
+      if (shouldSelectFromUrl && currentVideoId !== initialVideoId) {
         selectSong(initialVideoId, false);
       }
     }
-  }, [playlist, initialVideoId, currentVideoId, selectSong]);
+  }, [playlist, initialVideoId, isExplicitVideoId, currentVideoId, selectSong]);
 
   // Update URL when song changes
   useEffect(() => {
