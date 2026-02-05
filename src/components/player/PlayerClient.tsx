@@ -77,6 +77,8 @@ export function PlayerClient({ initialVideoId }: PlayerClientProps) {
 
   // Load lyrics when song changes
   useEffect(() => {
+    let cancelled = false;
+
     async function loadLyrics() {
       setIsLoadingLyrics(true);
       setLyrics({ lines: [] });
@@ -88,19 +90,28 @@ export function PlayerClient({ initialVideoId }: PlayerClientProps) {
 
       try {
         const response = await fetch(`/data/lyrics/${currentVideoId}.lrc`);
+        if (cancelled) return;
         if (response.ok) {
           const lrcContent = await response.text();
+          if (cancelled) return;
           const parsed = parseLRC(lrcContent);
           setLyrics(parsed);
         }
       } catch (error) {
+        if (cancelled) return;
         console.error('Failed to load lyrics:', error);
       } finally {
-        setIsLoadingLyrics(false);
+        if (!cancelled) {
+          setIsLoadingLyrics(false);
+        }
       }
     }
 
     loadLyrics();
+
+    return () => {
+      cancelled = true;
+    };
   }, [currentVideoId, currentSong?.hasLyrics]);
 
   const handleSelectSong = useCallback((videoId: string) => {
