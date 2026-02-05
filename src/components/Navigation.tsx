@@ -11,8 +11,8 @@ export default function Navigation() {
 
   const links = [
     { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/demo/alignment', label: 'Demo' },
+    { href: '/alignment', label: 'Alignment' },
+    { href: '/blog', label: 'Blog' },
     { href: '/player', label: '♪ Vibe' },
     { href: '/contact', label: 'Contact' },
   ];
