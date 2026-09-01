@@ -23,9 +23,9 @@ export default function Home() {
               priority
             />
             <Image
-              src="/images/title.svg"
+              src="/images/title.png"
               alt="Superviber"
-              width={320}
+              width={282}
               height={64}
               className="h-12 md:h-14 w-auto mt-2"
               priority

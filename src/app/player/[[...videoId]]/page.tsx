@@ -25,10 +25,19 @@ export async function generateMetadata({
     ? `Listen to ${song.title} by ${song.artist} with synchronized lyrics`
     : 'Listen to music with synchronized lyrics';
 
-  // YouTube thumbnail URL
-  const imageUrl = targetVideoId
-    ? `https://img.youtube.com/vi/${targetVideoId}/hqdefault.jpg`
-    : 'https://superviber.com/images/sv-icon.png';
+  // YouTube thumbnail when we have a video, otherwise the site card. Each has
+  // its own dimensions: hqdefault is 480x360, the OG card is 1200x630.
+  const image = targetVideoId
+    ? {
+        url: `https://img.youtube.com/vi/${targetVideoId}/hqdefault.jpg`,
+        width: 480,
+        height: 360,
+      }
+    : {
+        url: 'https://superviber.com/images/og-card.jpg',
+        width: 1200,
+        height: 630,
+      };
 
   return {
     title: song ? `${title} | SuperViber` : title,
@@ -40,9 +49,7 @@ export async function generateMetadata({
       siteName: 'SuperViber',
       images: [
         {
-          url: imageUrl,
-          width: 480,
-          height: 360,
+          ...image,
           alt: song ? `${song.title} by ${song.artist}` : 'SuperViber',
         },
       ],
@@ -51,7 +58,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title,
       description,
-      images: [imageUrl],
+      images: [image.url],
     },
   };
 }

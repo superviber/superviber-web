@@ -26,9 +26,9 @@ export default function Footer() {
                 className="h-7 w-auto"
               />
               <Image
-                src="/images/title.svg"
+                src="/images/title.png"
                 alt="Superviber"
-                width={100}
+                width={106}
                 height={24}
                 className="h-7 w-auto"
               />

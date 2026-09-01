@@ -30,9 +30,9 @@ export default function Navigation() {
             priority
           />
           <Image
-            src="/images/title.svg"
+            src="/images/title.png"
             alt="Superviber"
-            width={120}
+            width={124}
             height={28}
             className="h-8 w-auto hidden sm:block"
           />
