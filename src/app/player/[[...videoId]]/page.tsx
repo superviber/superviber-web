@@ -15,32 +15,38 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { videoId } = await params;
   const playlist = getPlaylist();
-  const targetVideoId = videoId?.[0] || playlist.songs[0]?.videoId;
+  const requestedVideoId = videoId?.[0];
+  const targetVideoId = requestedVideoId || playlist.songs[0]?.videoId;
   const song = playlist.songs.find((s) => s.videoId === targetVideoId);
 
-  const title = song
-    ? `${song.title} - ${song.artist}`
+  // Only advertise a specific track when the URL actually names one. The bare
+  // /player URL still opens on the first song, but as a shared link it stands
+  // for the player itself, not for whichever track happens to be first.
+  const sharedSong = requestedVideoId ? song : undefined;
+
+  const title = sharedSong
+    ? `${sharedSong.title} - ${sharedSong.artist}`
     : 'Player | SuperViber';
-  const description = song
-    ? `Listen to ${song.title} by ${song.artist} with synchronized lyrics`
+  const description = sharedSong
+    ? `Listen to ${sharedSong.title} by ${sharedSong.artist} with synchronized lyrics`
     : 'Listen to music with synchronized lyrics';
 
-  // YouTube thumbnail when we have a video, otherwise the site card. Each has
-  // its own dimensions: hqdefault is 480x360, the OG card is 1200x630.
-  const image = targetVideoId
+  // YouTube thumbnail when we have a video, otherwise the player card. Each
+  // has its own dimensions: hqdefault is 480x360, the OG card is 1200x630.
+  const image = sharedSong
     ? {
-        url: `https://img.youtube.com/vi/${targetVideoId}/hqdefault.jpg`,
+        url: `https://img.youtube.com/vi/${sharedSong.videoId}/hqdefault.jpg`,
         width: 480,
         height: 360,
       }
     : {
-        url: 'https://superviber.com/images/og-card.jpg',
+        url: 'https://superviber.com/images/og-player.jpg',
         width: 1200,
         height: 630,
       };
 
   return {
-    title: song ? `${title} | SuperViber` : title,
+    title: sharedSong ? `${title} | SuperViber` : title,
     description,
     openGraph: {
       title,
@@ -50,7 +56,9 @@ export async function generateMetadata({
       images: [
         {
           ...image,
-          alt: song ? `${song.title} by ${song.artist}` : 'SuperViber',
+          alt: sharedSong
+            ? `${sharedSong.title} by ${sharedSong.artist}`
+            : 'Superviber player — listen with synchronized lyrics',
         },
       ],
     },

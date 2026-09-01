@@ -17,6 +17,8 @@ SRC="$ROOT/scripts/og-card.html"
 VARIANTS=(
   "home:og-card"
   "alignment:og-alignment"
+  "blog:og-blog"
+  "player:og-player"
 )
 
 # Prefer a Playwright-cached headless shell; fall back to system Chrome.

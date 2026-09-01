@@ -137,6 +137,8 @@
     letter-spacing:-.032em; line-height:1.14;
     color:#fff;
   }
+  /* Two-line headlines get more size to fill the same block. */
+  .headline.lg{ font-size:76px; }
   .headline .accent{ display:block; }
   .sub{
     margin-top:30px;
@@ -181,6 +183,39 @@ const VARIANTS = {
       <p class="sub">Watch multiple AI experts deliberate and converge on consensus.</p>
     </div>
     <div class="domain">superviber.com/alignment</div>`,
+
+  // /blog and, as a fallback, individual posts.
+  'blog': () => `
+    <div class="brand">
+      <img src="../public/images/sv-icon.png" alt="">
+      <span>Superviber</span>
+    </div>
+    <div class="stack">
+      <div class="kicker">Development Blog</div>
+      <h1 class="headline">
+        Technical notes on<br>
+        multi-agent<br>
+        <span class="accent gradient">deliberation.</span>
+      </h1>
+      <p class="sub">Design, implementation, and evolution of alignment dialogues.</p>
+    </div>
+    <div class="domain">superviber.com/blog</div>`,
+
+  // /player — the no-track fallback; individual songs use their own artwork.
+  'player': () => `
+    <div class="brand">
+      <img src="../public/images/sv-icon.png" alt="">
+      <span>Superviber</span>
+    </div>
+    <div class="stack">
+      <div class="kicker">Vibe Player</div>
+      <h1 class="headline lg">
+        Listen with<br>
+        <span class="accent gradient">synchronized lyrics.</span>
+      </h1>
+      <p class="sub">A curated playlist you can read along to.</p>
+    </div>
+    <div class="domain">superviber.com/player</div>`,
 };
 
 const name = new URLSearchParams(location.search).get('v') || 'home';
