@@ -4,6 +4,15 @@ import matter from 'gray-matter';
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
 
+/** Social card for a post. Dimensions are declared so scrapers can lay the
+ *  preview out without fetching the file first. */
+export interface PostImage {
+  url: string;
+  width: number;
+  height: number;
+  alt?: string;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -13,6 +22,8 @@ export interface BlogPost {
   summary: string;
   tags: string[];
   content: string;
+  /** Only set when the post declares its own card; callers apply the default. */
+  image?: PostImage;
   seo?: {
     title?: string;
     description?: string;
@@ -55,6 +66,41 @@ export function getAllPosts(): BlogPostMeta[] {
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
+/**
+ * Normalises the optional `image` frontmatter key. Both forms are accepted:
+ *
+ *   image: /images/posts/my-post.jpg          # assumed 1200x630
+ *
+ *   image:                                    # for art of any other size
+ *     url: /images/posts/my-post.jpg
+ *     width: 1600
+ *     height: 840
+ *     alt: A description of the image
+ *
+ * Returns undefined when the key is absent or malformed, so the caller falls
+ * back to the site's blog card rather than emitting a broken og:image.
+ */
+function parsePostImage(value: unknown): PostImage | undefined {
+  if (typeof value === 'string') {
+    const url = value.trim();
+    return url ? { url, width: 1200, height: 630 } : undefined;
+  }
+
+  if (value && typeof value === 'object') {
+    const { url, width, height, alt } = value as Record<string, unknown>;
+    if (typeof url !== 'string' || !url.trim()) return undefined;
+
+    return {
+      url: url.trim(),
+      width: typeof width === 'number' ? width : 1200,
+      height: typeof height === 'number' ? height : 630,
+      ...(typeof alt === 'string' && alt.trim() ? { alt: alt.trim() } : {}),
+    };
+  }
+
+  return undefined;
+}
+
 export function getPostBySlug(slug: string): BlogPost | null {
   const mdxPath = path.join(BLOG_DIR, `${slug}.mdx`);
   const mdPath = path.join(BLOG_DIR, `${slug}.md`);
@@ -80,6 +126,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     summary: data.summary || '',
     tags: data.tags || [],
     content,
+    image: parsePostImage(data.image),
     seo: data.seo,
   };
 }

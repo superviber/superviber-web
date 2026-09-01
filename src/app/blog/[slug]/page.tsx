@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import { getAllPosts, getPostBySlug, type PostImage } from "@/lib/blog";
 import ReactMarkdown from "react-markdown";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
+
+/** Used when a post does not declare its own `image` in frontmatter. */
+const DEFAULT_POST_IMAGE: PostImage = {
+  url: "/images/og-blog.jpg",
+  width: 1200,
+  height: 630,
+};
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -23,6 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const image = post.image ?? DEFAULT_POST_IMAGE;
+
   return {
     title: post.seo?.title || `${post.title} | Alignment Dialogues Blog`,
     description: post.seo?.description || post.summary,
@@ -38,10 +47,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "Superviber",
       images: [
         {
-          url: "/images/og-blog.jpg",
-          width: 1200,
-          height: 630,
-          alt: post.title,
+          ...image,
+          alt: image.alt ?? post.title,
         },
       ],
     },
@@ -49,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: post.title,
       description: post.summary,
-      images: ["/images/og-blog.jpg"],
+      images: [image.url],
     },
     alternates: {
       canonical: `https://superviber.com/blog/${slug}`,
