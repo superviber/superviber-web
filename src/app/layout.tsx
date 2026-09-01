@@ -12,6 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://superviber.com"),
   title: "Superviber - Coordinated Intelligence",
   description: "Coordinated intelligence for complex decisions. Multi-agent deliberation architecture that orchestrates expert perspectives to convergent consensus.",
   keywords: ["AI agents", "multi-agent", "LLM", "decision-making", "alignment", "deliberation", "consensus"],
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     description: "Coordinated intelligence for complex decisions.",
     type: "website",
     url: "https://superviber.com",
-    images: ["/images/logo.png"],
+    images: ["/images/sv-icon.png"],
   },
 };
 
