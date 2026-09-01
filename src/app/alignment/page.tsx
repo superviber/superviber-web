@@ -10,6 +10,21 @@ export const metadata: Metadata = {
     description: "Multi-expert deliberation with structured disagreement and convergence tracking",
     type: "website",
     url: "https://superviber.com/alignment",
+    siteName: "Superviber",
+    images: [
+      {
+        url: "/images/og-alignment.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Alignment Dialogues — N experts. Structured disagreement. Emergent truth.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Alignment Dialogues",
+    description: "Multi-expert deliberation with structured disagreement and convergence tracking",
+    images: ["/images/og-alignment.jpg"],
   },
   alternates: {
     canonical: "https://superviber.com/alignment"
