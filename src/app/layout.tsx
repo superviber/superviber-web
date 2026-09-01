@@ -21,7 +21,21 @@ export const metadata: Metadata = {
     description: "Coordinated intelligence for complex decisions.",
     type: "website",
     url: "https://superviber.com",
-    images: ["/images/sv-icon.png"],
+    siteName: "Superviber",
+    images: [
+      {
+        url: "/images/og-card.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Superviber — coordinated intelligence for complex decisions",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Superviber",
+    description: "Coordinated intelligence for complex decisions.",
+    images: ["/images/og-card.jpg"],
   },
 };
 
