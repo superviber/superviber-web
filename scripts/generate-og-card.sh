@@ -17,6 +17,7 @@ SRC="$ROOT/scripts/og-card.html"
 VARIANTS=(
   "home:og-card"
   "alignment:og-alignment"
+  "demo:og-demo"
   "blog:og-blog"
   "player:og-player"
 )

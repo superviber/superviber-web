@@ -1,9 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const description = "Get in touch with the SuperViber team.";
+
 export const metadata: Metadata = {
   title: "Contact - SuperViber",
-  description: "Get in touch with the SuperViber team.",
+  description,
+  openGraph: {
+    title: "Contact Superviber",
+    description,
+    type: "website",
+    url: "https://superviber.com/contact",
+    siteName: "Superviber",
+    images: [
+      {
+        url: "/images/og-card.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Superviber — coordinated intelligence for complex decisions",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Superviber",
+    description,
+    images: ["/images/og-card.jpg"],
+  },
+  alternates: {
+    canonical: "https://superviber.com/contact",
+  },
 };
 
 export default function ContactPage() {
