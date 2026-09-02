@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAllPosts, getPostBySlug, type PostImage } from "@/lib/blog";
+import { DRAFTS_VISIBLE, getAllPosts, getPostBySlug, type PostImage } from "@/lib/blog";
 import ReactMarkdown from "react-markdown";
 
 interface Props {
@@ -24,7 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
-  if (!post) {
+  // getAllPosts already hides drafts, but dynamicParams means a direct URL
+  // would still render one in production. Treat it as missing.
+  if (!post || (post.draft && !DRAFTS_VISIBLE)) {
     return {
       title: "Post Not Found",
     };
@@ -91,7 +93,7 @@ export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
-  if (!post) {
+  if (!post || (post.draft && !DRAFTS_VISIBLE)) {
     notFound();
   }
 

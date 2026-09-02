@@ -4,6 +4,13 @@ import matter from 'gray-matter';
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
 
+/**
+ * Posts marked `draft: true` in frontmatter are visible while developing and
+ * excluded from the built site, so an unfinished file sitting in content/blog
+ * never ships. Mirrors how the admin API gates itself on NODE_ENV.
+ */
+export const DRAFTS_VISIBLE = process.env.NODE_ENV === 'development';
+
 /** Social card for a post. Dimensions are declared so scrapers can lay the
  *  preview out without fetching the file first. */
 export interface PostImage {
@@ -24,6 +31,7 @@ export interface BlogPost {
   content: string;
   /** Only set when the post declares its own card; callers apply the default. */
   image?: PostImage;
+  draft: boolean;
   seo?: {
     title?: string;
     description?: string;
@@ -37,6 +45,7 @@ export interface BlogPostMeta {
   author: string;
   summary: string;
   tags: string[];
+  draft: boolean;
 }
 
 export function getAllPosts(): BlogPostMeta[] {
@@ -59,11 +68,14 @@ export function getAllPosts(): BlogPostMeta[] {
       author: data.author || 'Eric Garcia',
       summary: data.summary || '',
       tags: data.tags || [],
+      draft: data.draft === true,
     };
   });
 
   // Sort by date descending
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return posts
+    .filter(post => DRAFTS_VISIBLE || !post.draft)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 /**
@@ -127,6 +139,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     tags: data.tags || [],
     content,
     image: parsePostImage(data.image),
+    draft: data.draft === true,
     seo: data.seo,
   };
 }
