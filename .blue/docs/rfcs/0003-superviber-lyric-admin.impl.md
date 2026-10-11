@@ -13,7 +13,7 @@
 
 ## Summary
 
-Build an admin tool for creating and syncing lyrics to YouTube videos. Features: video URL validation, click-to-mark timestamp editing, LRC export. Data stored as JSON files in the repo, deployed via git push to AWS Amplify.
+Build an admin tool for creating and syncing lyrics to YouTube videos. Features: video URL validation, click-to-mark timestamp editing, LRC export. Data stored as JSON files in the repo, deployed via git push (Vercel auto-deploys).
 
 ## Problem
 
@@ -42,7 +42,7 @@ superviber-web/
 - Zero backend complexity
 - Git history = version control + audit trail
 - PRs = review process for content changes
-- Works with static hosting (AWS Amplify)
+- Works with static hosting (Vercel)
 - Scales easily to ~100 songs
 
 **Deployment Flow**:
@@ -55,7 +55,7 @@ Create/edit lyrics (saves directly to public/data/)
     ↓
 git add public/data/ && git commit && git push
     ↓
-Amplify auto-deploys
+Vercel auto-deploys
     ↓
 New lyrics live on superviber.com
 ```
@@ -477,7 +477,7 @@ Disclaimer in UI: "Lyrics sourced from community databases or provided by site a
 
 - Admin can add a new song with synced lyrics
 - Lyrics export correctly in LRC format
-- Changes can be deployed via git push to Amplify
+- Changes can be deployed via git push (Vercel)
 
 ## Tasks
 

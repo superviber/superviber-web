@@ -12,7 +12,7 @@
 
 ## Summary
 
-Build a YouTube playlist player with karaoke-style synchronized lyrics. Uses YouTube IFrame API with LRC format lyrics. Video at top, lyrics below with auto-scroll. Each song is deep-linkable via URL. Deployed as part of the static site on AWS Amplify.
+Build a YouTube playlist player with karaoke-style synchronized lyrics. Uses YouTube IFrame API with LRC format lyrics. Video at top, lyrics below with auto-scroll. Each song is deep-linkable via URL. Deployed as part of the static site on Vercel.
 
 ## Problem
 
@@ -249,7 +249,7 @@ function syncLoop() {
 
 ### Hosting
 
-Deployed as part of superviber-web static site on AWS Amplify (RFC-0000). The player is a client-side React component that fetches static JSON/LRC data.
+Deployed as part of superviber-web static site on Vercel (RFC-0000). The player is a client-side React component that fetches static JSON/LRC data.
 
 ## Non-Goals
 

@@ -12,7 +12,7 @@
 
 ## Summary
 
-Create the landing page for superviber.com with about and contact sections. Static pages deployed to AWS Amplify in SuperViber's own AWS account.
+Create the landing page for superviber.com with about and contact sections. Deployed on Vercel (see RFC-0000).
 
 ## Problem
 
@@ -39,40 +39,38 @@ superviber-web/
 ├── data/
 │   ├── songs.json        # Playlist data (RFC-0003)
 │   └── lyrics/           # LRC files (RFC-0003)
-├── amplify.yml           # Amplify build config
-└── package.json
+└── package.json          # Vercel auto-detects Next.js, no build config needed
 ```
 
 ### Hosting
 
-**Platform:** AWS Amplify (see RFC-0000)
+**Platform:** Vercel (see RFC-0000)
 
 | Aspect | Configuration |
 |--------|---------------|
-| AWS Account | superviber (773474260280) |
-| Hosting | AWS Amplify |
-| Domain | superviber.com (PowerDNS in hearth) |
-| SSL | Automatic via Amplify |
-| CI/CD | Amplify auto-deploys from GitHub main branch |
+| Hosting | Vercel (Hobby) |
+| Domain | superviber.com (Cloudflare DNS, apex CNAME, DNS-only) |
+| SSL | Automatic via Vercel |
+| CI/CD | Vercel auto-deploys from GitHub main branch; PRs get previews |
 
 **Deployment Flow:**
 ```
 git push origin main
     ↓
-GitHub webhook triggers Amplify
+Vercel Git integration triggers a build
     ↓
-Amplify runs: npm ci → npm run build
+Vercel runs: install → next build
     ↓
-Static files deployed to CDN
+Deployed to Vercel's edge network
     ↓
 Live at superviber.com
 ```
 
 ### Tech Stack
 
-- **Framework**: Next.js or Astro (SSG mode)
-- **Styling**: TBD (Tailwind, CSS modules, etc.)
-- **Hosting**: AWS Amplify
+- **Framework**: Next.js (App Router)
+- **Styling**: Tailwind CSS
+- **Hosting**: Vercel
 - **Contact**: mailto: link or simple form → hello@superviber.com
 
 ### Pages
@@ -108,7 +106,7 @@ Live at superviber.com
 - [ ] Contact form/mailto sends to hello@superviber.com
 - [ ] Pages load under 3 seconds on 3G
 - [ ] Responsive on mobile, tablet, desktop
-- [ ] Amplify deploys successfully on git push
+- [ ] Vercel deploys successfully on git push
 
 ## Success Criteria
 
@@ -119,13 +117,12 @@ Live at superviber.com
 ## Tasks
 
 - [ ] Initialize superviber-web repo with SSG framework
-- [ ] Create amplify.yml build configuration
 - [ ] Create landing page with hero and navigation
 - [ ] Create about page
 - [ ] Create contact page with email link/form
-- [ ] Connect repo to Amplify (after RFC-0000 complete)
-- [ ] Verify custom domain works
-- [ ] Deploy to production
+- [x] Connect repo to Vercel (RFC-0000)
+- [x] Verify custom domain works
+- [x] Deploy to production
 
 ---
 
