@@ -86,10 +86,10 @@ export default function PrivacyPage() {
               <p>
                 Questions about this policy go to{" "}
                 <a
-                  href="mailto:admin@superviber.com"
+                  href="mailto:contact@superviber.com"
                   className="text-violet-400 hover:text-violet-300 underline"
                 >
-                  admin@superviber.com
+                  contact@superviber.com
                 </a>
                 .
               </p>
